@@ -15,12 +15,14 @@ void setup()
     #include <phys253setup.txt>
     Serial.begin(9600);
 }
- 
+
 void loop()
 {
   //Main code, repeated
   LCD.clear();
   LCD.home();
+
+  LCD.print("Code loaded!");
   
   delay(500);
 }
