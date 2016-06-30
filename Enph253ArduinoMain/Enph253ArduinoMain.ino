@@ -9,6 +9,12 @@ extern "C" {
 //Include .h files here if they are in C
 }
 
+#define TAPE_FOLLOWING_QRD_RIGHT  0
+#define TAPE_FOLLOWING_QRD_LEFT 2
+
+#define MOTOR_RIGHT_WHEEL 3
+#define MOTOR_LEFT_WHEEL 0
+
 void setup()
 {
   //Setup
@@ -19,11 +25,9 @@ void setup()
 void loop()
 {
   //Main code, repeated
-  LCD.clear();
-  LCD.home();
+  //LCD.clear();
+  //LCD.home();
 
-  LCD.print("Code loaded!");
-  
-  delay(500);
+  followLine();
 }
 
