@@ -17,8 +17,8 @@ extern "C" {
 #define TAPE_FOLLOWING_QRD_LEFT 2
 
 //MOTOR OUTPUTS
-#define MOTOR_RIGHT_WHEEL 3
-#define MOTOR_LEFT_WHEEL 0
+#define MOTOR_RIGHT_WHEEL 0
+#define MOTOR_LEFT_WHEEL 3
 
 void setup()
 {

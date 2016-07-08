@@ -5,7 +5,7 @@
    of PID control to make the bot follow the line.
 */
 #define TAPE_FOLLOWING_TRESHOLD 100
-#define TAPE_FOLLOWING_CORRECTION 5
+#define TAPE_FOLLOWING_CORRECTION 3
 
 int tapeFollowing_lastError = 0;
 int currentMotorSpeed = 150;
@@ -21,8 +21,8 @@ void followLine()
   processInterrupts();
 
   // @TODO: move these to # defines after calibrating?
-  int proportionalGain = knob(6);
-  int derivativeGain = knob(7);
+  int proportionalGain = knob(6) >> 2;
+  int derivativeGain = knob(7) >> 2;
 
   int rightQRD = analogRead(TAPE_FOLLOWING_QRD_RIGHT);
   int leftQRD = analogRead(TAPE_FOLLOWING_QRD_LEFT);
@@ -90,7 +90,7 @@ void followLine()
   tapeFollowing_loopCount += 1;
   tapeFollowing_ticksSinceLastError += 1;
   motor.speed(MOTOR_RIGHT_WHEEL, currentMotorSpeed + totalAdjustment);
-  motor.speed(MOTOR_LEFT_WHEEL, -currentMotorSpeed + totalAdjustment);
+  motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeed - totalAdjustment);
   tapeFollowing_lastError = currentError;
 
 }
@@ -99,8 +99,8 @@ void followLine()
 
    Brings the bot to a halt as fast as possible by putting motors in reverse for a set amount of time
 */
-# define HARD_STOP_REVERSE_SPEED  -100//between -255 and 255
-# define HARD_STOP_REVERSE_TIME 500 //ms
+# define HARD_STOP_REVERSE_SPEED  -150 //between -255 and 255
+# define HARD_STOP_REVERSE_TIME 125 //ms
 void hardStop() {
 
   motor.speed(MOTOR_RIGHT_WHEEL, HARD_STOP_REVERSE_SPEED);
