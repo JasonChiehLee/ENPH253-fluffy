@@ -5,20 +5,7 @@
 
 #include <phys253.h>
 #include <LiquidCrystal.h>
-extern "C" {
-  //Include .h files here if they are in C
-}
-
-//DIGITAL INPUTS
-#define TEST_STOP_BUTTON 0 // FOR TESTING
-
-//ANALOG INPUTS
-#define TAPE_FOLLOWING_QRD_RIGHT  0
-#define TAPE_FOLLOWING_QRD_LEFT 2
-
-//MOTOR OUTPUTS
-#define MOTOR_RIGHT_WHEEL 0
-#define MOTOR_LEFT_WHEEL 3
+#include "Group2Setup.h"
 
 void setup()
 {

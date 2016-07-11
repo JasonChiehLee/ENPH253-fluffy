@@ -4,7 +4,7 @@
    Checks for interrupts, if processInterrupt falls through with no interrupt conditions detected, proceeds through one loop
    of PID control to make the bot follow the line.
 */
-#define TAPE_FOLLOWING_TRESHOLD 100
+#define TAPE_FOLLOWING_TRESHOLD QRD_GROUND_THRESHOLD
 #define TAPE_FOLLOWING_CORRECTION 3
 
 int tapeFollowing_lastError = 0;
@@ -109,10 +109,49 @@ void hardStop() {
   motor.stop(MOTOR_RIGHT_WHEEL);
   motor.stop(MOTOR_LEFT_WHEEL);
 
-  // show that we've stopped
-  LCD.clear();
-  LCD.setCursor(0, 0);
-  LCD.print("Stopped?");
-  delay(2000);
+}
+
+/*
+   function - intersectionTurn
+
+   Turns the robot in the direction_e specified in the call to this functions, ends once tape has been found
+   Assumes that we can turn in that direction!
+*/
+# define INTERSECTION_TURN_SPEED 150
+# define INTERSECTION_TURN_WAIT_TICK 10
+void intersectionTurn(direction_e turnDirection) {
+  if (turnDirection == LEFT)
+  {
+    motor.speed(MOTOR_RIGHT_WHEEL, INTERSECTION_TURN_SPEED);
+    motor.stop(MOTOR_LEFT_WHEEL);
+    // wait until outside tape following QRD is off
+    while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > TAPE_FOLLOWING_TRESHOLD)
+    {
+      delay(INTERSECTION_TURN_WAIT_TICK);
+    }
+    // wait until both QRDs are on again
+    while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
+    {
+      delay(INTERSECTION_TURN_WAIT_TICK);
+    }
+    motor.stop(MOTOR_RIGHT_WHEEL);
+  }
+  else if (turnDirection == RIGHT)
+  {
+    motor.stop(MOTOR_RIGHT_WHEEL);
+    motor.speed(MOTOR_LEFT_WHEEL, INTERSECTION_TURN_SPEED);
+    // wait until outside tape following QRD is off
+    while (analogRead(TAPE_FOLLOWING_QRD_LEFT) > TAPE_FOLLOWING_TRESHOLD)
+    {
+      delay(INTERSECTION_TURN_WAIT_TICK);
+    }
+    // wait until both QRDs are on again
+    while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
+    {
+      delay(INTERSECTION_TURN_WAIT_TICK);
+    }
+    motor.stop(MOTOR_LEFT_WHEEL);
+  }
+  // if the plan is to go straight, no action needed
 }
 
