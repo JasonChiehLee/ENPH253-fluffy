@@ -20,6 +20,6 @@ void loop()
   //LCD.clear();
   //LCD.home();
 
-  followLine();
+  tapeFollow();
 }
 

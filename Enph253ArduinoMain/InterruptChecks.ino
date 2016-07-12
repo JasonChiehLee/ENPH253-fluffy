@@ -12,7 +12,13 @@
    PLEASE ADD ANY NEW INTERRUPTS TO THIS LIST
 */
 void processInterrupts() {
-  
+
+  // check for adjacent dolls
+  if (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD || analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
+  {
+    dollHandler();
+  }
+
   // testing stop switch
   if (!digitalRead(TEST_STOP_BUTTON))
   {
@@ -25,16 +31,14 @@ void processInterrupts() {
     delay(2000);
   }
 
-  // check for intersection - not implemented in mech yet!
+  // check for intersection
   int intersectionQRDRight = analogRead(INTERSECTION_QRD_RIGHT);
   int intersectionQRDLeft = analogRead(INTERSECTION_QRD_LEFT);
-  if (0)//(intersectionQRDRight > QRD_GROUND_THRESHOLD) || (intersectionQRDLeft > QRD_GROUND_THRESHOLD))
+  if ((intersectionQRDRight > QRD_GROUND_THRESHOLD) || (intersectionQRDLeft > QRD_GROUND_THRESHOLD))
   {
-    LCD.clear();
-    LCD.home();
-    LCD.print("At intersection");
+    hardStop();
     intersectionHandler(intersectionQRDRight, intersectionQRDLeft);
-    delay(5000);
   }
+
 }
 
