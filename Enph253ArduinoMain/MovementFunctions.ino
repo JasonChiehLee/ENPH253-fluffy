@@ -1,17 +1,12 @@
-# define TAPE_FOLLOWING_TRESHOLD QRD_GROUND_THRESHOLD
-# define TAPE_FOLLOWING_CORRECTION 3
-# define HARD_STOP_REVERSE_SPEED  -100 //between -255 and 255
-# define HARD_STOP_REVERSE_TIME 100 //ms
-# define INTERSECTION_TURN_SPEED 150
-# define INTERSECTION_TURN_WAIT_TICK 5
 /*
    function - followLine
 
    Checks for interrupts, if processInterrupt falls through with no interrupt conditions detected, proceeds through one loop
    of PID control to make the bot follow the line.
 */
+int currentMotorSpeedRight = TAPE_FOLLOWING_DEFAULT_SPEED;
+int currentMotorSpeedLeft = TAPE_FOLLOWING_DEFAULT_SPEED;
 int tapeFollowing_lastError = 0;
-int currentMotorSpeed = 150;
 int tapeFollowing_loopCount = 0; // for testing/debug ~ remove if we're good here
 int tapeFollowing_ticksSinceLastError = 0; // m in sample code
 int tapeFollowing_lastDifferentError = 0; // recerr in sample code
@@ -22,6 +17,10 @@ void tapeFollow()
 
   // Check for interrupts
   processInterrupts();
+
+  // Reset motor speeds
+  currentMotorSpeedRight = TAPE_FOLLOWING_DEFAULT_SPEED;
+  currentMotorSpeedLeft = TAPE_FOLLOWING_DEFAULT_SPEED;
 
   // @TODO: move these to # defines after calibrating?
   int proportionalGain = knob(6) >> 2;
@@ -63,6 +62,10 @@ void tapeFollow()
                 / (float)(tapeFollowing_ticksSinceLastError + tapeFollowing_errorHistory);
   int totalAdjustment = pAdjust + dAdjust;
 
+  // Update motor speeds
+  currentMotorSpeedRight = currentMotorSpeedRight + totalAdjustment;
+  currentMotorSpeedLeft = currentMotorSpeedLeft - totalAdjustment;
+
 #if 1 // FOR DEBUG/TEST, DISABLE FOR ACTUAL RUNNING
   if (tapeFollowing_loopCount == 30)
   {
@@ -80,10 +83,10 @@ void tapeFollow()
     LCD.print(derivativeGain);
 
     LCD.setCursor(5, 1);
-    LCD.print(pAdjust);
+    LCD.print(currentMotorSpeedLeft);
 
     LCD.setCursor(10, 1);
-    LCD.print(dAdjust);
+    LCD.print(currentMotorSpeedRight);
 
     tapeFollowing_loopCount = 0;
   }
@@ -92,21 +95,18 @@ void tapeFollow()
   // Increment tick counters and write adjustments to motors, update last error
   tapeFollowing_loopCount += 1;
   tapeFollowing_ticksSinceLastError += 1;
-  motor.speed(MOTOR_RIGHT_WHEEL, currentMotorSpeed + totalAdjustment);
-  motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeed - totalAdjustment);
+  motor.speed(MOTOR_RIGHT_WHEEL, currentMotorSpeedRight);
+  motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeedLeft);
   tapeFollowing_lastError = currentError;
 
 }
 /*
    function - hardStop
 
-   Brings the bot to a halt as fast as possible by putting motors in reverse for a set amount of time
+   Stops the wheels
 */
 void hardStop() {
-
-  motor.speed(MOTOR_RIGHT_WHEEL, HARD_STOP_REVERSE_SPEED);
-  motor.speed(MOTOR_LEFT_WHEEL, HARD_STOP_REVERSE_SPEED);
-  delay(HARD_STOP_REVERSE_TIME);
+  
   motor.stop(MOTOR_RIGHT_WHEEL);
   motor.stop(MOTOR_LEFT_WHEEL);
 
@@ -151,6 +151,10 @@ void intersectionTurn(direction_e turnDirection) {
     }
     motor.stop(MOTOR_LEFT_WHEEL);
   }
-  // if the plan is to go straight, no action needed
+  else // FORWARD
+  {
+    motor.speed(MOTOR_RIGHT_WHEEL, currentMotorSpeedRight);
+    motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeedLeft);
+  }
 }
 

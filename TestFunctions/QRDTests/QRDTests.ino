@@ -12,16 +12,16 @@ void loop() {
   LCD.clear();
   
   LCD.setCursor(3,0);
-  LCD.print(analogRead(2));
+  LCD.print(analogRead(1));
 
   LCD.setCursor(8,0);
   LCD.print(analogRead(0));
 
   LCD.setCursor(0,1);
-  LCD.print(analogRead(6));
+  LCD.print(analogRead(3));
 
   LCD.setCursor(11,1);
-  LCD.print(analogRead(4));
+  LCD.print(analogRead(2));
 
   delay(100);
 

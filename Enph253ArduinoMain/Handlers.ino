@@ -1,24 +1,29 @@
 /*
    function - intersectionHandler
 
-   Takes in left and right intersection sensor readings, calls necessary function to compute optimal direction to turn.
+   Checks which directions are available while halting, and calls necessary function to compute optimal direction to turn.
    Proceeds to call
 */
-void intersectionHandler(int QRDRight, int QRDLeft)
+void intersectionHandler()
 {
-  // For now, just halt the bot
+  boolean rightTurn = false, leftTurn = false, straightThrough = false;
+  // Halt the bot
   hardStop();
 
-  // Check available directions
-  boolean rightTurn, leftTurn, straightThrough;
-  (QRDRight > QRD_GROUND_THRESHOLD) ? rightTurn = true : rightTurn = false;
-  (QRDLeft > QRD_GROUND_THRESHOLD) ? leftTurn = true : leftTurn = false;
+  // Let the stop happen, and check which directions we can turn
+  for (int t = 0; t < HARD_STOP_WAIT_TIME; t += HARD_STOP_WAIT_TIME >> 2)
+  {
+    ((analogRead(INTERSECTION_QRD_RIGHT) > QRD_GROUND_THRESHOLD) || rightTurn) ? rightTurn = true : rightTurn = false;
+    ((analogRead(INTERSECTION_QRD_LEFT) > QRD_GROUND_THRESHOLD) || leftTurn) ? leftTurn = true : leftTurn = false;
+    delay(HARD_STOP_WAIT_TIME >> 2);
+  }
+
   (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > QRD_GROUND_THRESHOLD || analogRead(TAPE_FOLLOWING_QRD_LEFT) > QRD_GROUND_THRESHOLD) ? straightThrough = true : straightThrough = false;
 
   // Compute optimal direction
   // Temporarily prioritizing left-straight-right until sensors are online
   direction_e nextDirection = FORWARD;
-  
+
   if (leftTurn)
   {
     LCD.clear();
@@ -49,17 +54,17 @@ void intersectionHandler(int QRDRight, int QRDLeft)
   }
 
   // Move to that direction
-  delay(2000);
+  //delay(1000);
   intersectionTurn(nextDirection);
 }
 
 /*
- * function - dollHandler
- * 
- * Carries out aqcuisition actions when called
- */
+   function - dollHandler
+
+   Carries out aqcuisition actions when called
+*/
 void dollHandler()
 {
-  
+
 }
 

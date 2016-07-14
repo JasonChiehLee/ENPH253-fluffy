@@ -36,8 +36,7 @@ void processInterrupts() {
   int intersectionQRDLeft = analogRead(INTERSECTION_QRD_LEFT);
   if ((intersectionQRDRight > QRD_GROUND_THRESHOLD) || (intersectionQRDLeft > QRD_GROUND_THRESHOLD))
   {
-    hardStop();
-    intersectionHandler(intersectionQRDRight, intersectionQRDLeft);
+    intersectionHandler();
   }
 
 }
