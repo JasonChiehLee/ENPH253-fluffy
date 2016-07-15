@@ -164,3 +164,56 @@ void intersectionTurn(direction_e turnDirection) {
   }
 }
 
+/*
+   function - pullover
+
+   Pull over in a specified direction and uses the front, ground switches to find edge of surface!
+*/
+void pullover(direction_e pulloverDirection) {
+  
+}
+
+/*
+   function - xPointTurn
+
+   Performs (3 or 5) point turn depending !
+*/
+void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
+  if lastPickUpDirection == LEFT
+  {
+    firstTurn = RIGHT;
+    powerMotor = MOTOR_LEFT_WHEEL;
+    pivotMotor = MOTOR_RIGHT_WHEEL;
+  }
+  else
+  {
+    firstTurn = LEFT;
+    powerMotor = MOTOR_RIGHT_WHEEL;
+    pivotMotor = MOTOR_LEFT_WHEEL;
+  }
+
+  
+  if numPoints == 3
+  {
+    //Three-point turn
+    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == OFF && digitalRead(FRONT_LEFT_GROUND_SWITCH) == OFF)
+    {
+      motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
+      motor.speed(powerMotor, -INTERSECTION_TURN_SPEED/2);
+    }
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) = OFF && digitalRead(BACK_LEFT_BUMPER_SWITCH) = OFF)
+    {
+      motor.speed(powerMotor, INTERSECTION_TURN_SPEED/2);
+      motor.speed(powerMotor, -INTERSECTION_TURN_SPEED);
+    }
+    while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
+    {
+      motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
+      motor.speed(powerMotor, -INTERSECTION_TURN_SPEED/2);
+    }
+  }
+  else
+  {
+    //Five-point turn
+  }
+}
