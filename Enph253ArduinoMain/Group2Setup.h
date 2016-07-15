@@ -5,6 +5,7 @@
 #define FRONT_LEFT_BUMPER_SWITCH 3
 #define BACK_RIGHT_BUMPER_SWITCH 4
 #define BACK_LEFT_BUMPER_SWITCH 5
+
 #define ON 1
 #define OFF 0
 
@@ -19,11 +20,13 @@
 //MOTOR OUTPUTS
 #define MOTOR_RIGHT_WHEEL 0
 #define MOTOR_LEFT_WHEEL 1
+#define MOTOR_CLAW 2
+#define MOTOR_CONVEYOR 3
 
 //SERVO OUTPUTS
-//RCServo0 = front facing scanners
-//RCServo1 = 
-//RCServo2 = 
+//RCServo0 BASEPOSITION
+//RCServo1 BACKPOSITION
+//RCServo2 FRONTPOSITION
 
 // QRD to ground threshold
 #define QRD_GROUND_THRESHOLD 150
@@ -45,6 +48,27 @@
 #define MOTOR_WRITE_WAIT_TICK 5
 
 enum direction_e {
-  LEFT,RIGHT,FORWARD,BACKWARD
+  RIGHT,LEFT,FORWARD,BACKWARD
 };
 
+struct armPosition_t
+{
+  byte baseRotationAngle;
+  byte frontPositionAngle;
+  byte backPositionAngle;
+};
+
+// Arm position
+armPosition_t reset = {0, 0, 90};
+armPosition_t rightPickUp = {0, 0, 0};
+armPosition_t rightDropOff = {0, 0, 80};
+armPosition_t leftDropOff = {0, 0, 100};
+armPosition_t leftPickUp = {0, 0, 180};
+
+enum clamp_e {
+  CLOSE,OPEN
+};
+
+enum rotation_e {
+  STARBOARD,PORT
+};

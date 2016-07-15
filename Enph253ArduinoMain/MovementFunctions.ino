@@ -171,8 +171,8 @@ void intersectionTurn(direction_e turnDirection) {
 */
 void pullOver(direction_e pulloverDirection) {
   int count = 0;
-  int firstPowerMotor;
-  int secondPowerMotor;
+  byte firstPowerMotor;
+  byte secondPowerMotor;
   
   if (pulloverDirection == RIGHT)
   {
@@ -208,8 +208,8 @@ void pullOver(direction_e pulloverDirection) {
    Performs (3 or 5) point turn depending on whether a cliff is present!
 */
 void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
-  int powerMotor;
-  int pivotMotor;
+  byte powerMotor;
+  byte pivotMotor;
   if (lastPickUpDirection == RIGHT)
   {
     direction_e firstTurn = LEFT;
@@ -228,13 +228,13 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
   //Three-point turn
   {
     motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED/2);
+    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
     while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == OFF && digitalRead(FRONT_LEFT_GROUND_SWITCH) == OFF)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
     
-    motor.speed(powerMotor, UTURN_SPEED/2);
+    motor.speed(powerMotor, UTURN_SPEED >> 1);
     motor.speed(pivotMotor, -UTURN_SPEED);
     while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
     {
@@ -242,7 +242,7 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
     }
     
     motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED/2);
+    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
     while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
@@ -252,13 +252,13 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
   //Five-point turn
   {
     motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED/2);
+    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
     while (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON && digitalRead(FRONT_LEFT_BUMPER_SWITCH) == ON)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
 
-    motor.speed(powerMotor, UTURN_SPEED/2);
+    motor.speed(powerMotor, UTURN_SPEED >> 1);
     motor.speed(pivotMotor, -UTURN_SPEED);
     while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
     {
@@ -272,7 +272,7 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
 
-    motor.speed(powerMotor, UTURN_SPEED/2);
+    motor.speed(powerMotor, UTURN_SPEED >> 1);
     motor.speed(pivotMotor, -UTURN_SPEED);
     while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
     {
@@ -280,7 +280,7 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
     }
 
     motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED/2);
+    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
     while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
