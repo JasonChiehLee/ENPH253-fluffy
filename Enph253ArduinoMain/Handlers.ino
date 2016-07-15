@@ -7,15 +7,23 @@
 void intersectionHandler()
 {
   boolean rightTurn = false, leftTurn = false, straightThrough = false;
+
+  for (int t = 0; t < HARD_STOP_WAIT_TIME; t += HARD_STOP_WAIT_TIME >> 4)
+  {
+    ((analogRead(INTERSECTION_QRD_RIGHT) > QRD_GROUND_THRESHOLD) || rightTurn) ? rightTurn = true : rightTurn = false;
+    ((analogRead(INTERSECTION_QRD_LEFT) > QRD_GROUND_THRESHOLD) || leftTurn) ? leftTurn = true : leftTurn = false;
+    delay(HARD_STOP_WAIT_TIME >> 4);
+  }
+  
   // Halt the bot
   hardStop();
 
   // Let the stop happen, and check which directions we can turn
-  for (int t = 0; t < HARD_STOP_WAIT_TIME; t += HARD_STOP_WAIT_TIME >> 2)
+  for (int t = 0; t < HARD_STOP_WAIT_TIME; t += HARD_STOP_WAIT_TIME >> 4)
   {
     ((analogRead(INTERSECTION_QRD_RIGHT) > QRD_GROUND_THRESHOLD) || rightTurn) ? rightTurn = true : rightTurn = false;
     ((analogRead(INTERSECTION_QRD_LEFT) > QRD_GROUND_THRESHOLD) || leftTurn) ? leftTurn = true : leftTurn = false;
-    delay(HARD_STOP_WAIT_TIME >> 2);
+    delay(HARD_STOP_WAIT_TIME >> 4);
   }
 
   (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > QRD_GROUND_THRESHOLD || analogRead(TAPE_FOLLOWING_QRD_LEFT) > QRD_GROUND_THRESHOLD) ? straightThrough = true : straightThrough = false;
@@ -54,7 +62,6 @@ void intersectionHandler()
   }
 
   // Move to that direction
-  //delay(1000);
   intersectionTurn(nextDirection);
 }
 

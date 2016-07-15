@@ -124,10 +124,13 @@ void intersectionTurn(direction_e turnDirection) {
     motor.speed(MOTOR_RIGHT_WHEEL, INTERSECTION_TURN_SPEED);
     motor.stop(MOTOR_LEFT_WHEEL);
     // wait until both QRDs are off
+    /*
     while ((analogRead(TAPE_FOLLOWING_QRD_LEFT) > TAPE_FOLLOWING_TRESHOLD) || (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > TAPE_FOLLOWING_TRESHOLD))
     {
       delay(INTERSECTION_TURN_WAIT_TICK);
     }
+    */
+    delay(INTERSECTION_TURN_TIME);
     // wait until at least one QRD is on again
     while ((analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD) && (analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD))
     {
@@ -140,10 +143,13 @@ void intersectionTurn(direction_e turnDirection) {
     motor.stop(MOTOR_RIGHT_WHEEL);
     motor.speed(MOTOR_LEFT_WHEEL, INTERSECTION_TURN_SPEED);
     // wait until both QRDs are off
+    /*
     while ((analogRead(TAPE_FOLLOWING_QRD_LEFT) > TAPE_FOLLOWING_TRESHOLD) || (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > TAPE_FOLLOWING_TRESHOLD))
     {
       delay(INTERSECTION_TURN_WAIT_TICK);
     }
+    */
+    delay(INTERSECTION_TURN_TIME);
     // wait until both QRDs are on again
     while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
     {
