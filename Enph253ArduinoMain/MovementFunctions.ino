@@ -170,30 +170,58 @@ void intersectionTurn(direction_e turnDirection) {
    Pull over in a specified direction and uses the front, ground switches to find edge of surface!
 */
 void pullover(direction_e pulloverDirection) {
+  int count = 0;
+  int firstPowerMotor;
+  int secondPowerMotor;
   
+  if (pulloverDirection == RIGHT)
+  {
+    firstPowerMotor = MOTOR_LEFT_WHEEL;
+    secondPowerMotor = MOTOR_RIGHT_WHEEL;
+  }
+  else
+  {
+    firstPowerMotor = MOTOR_RIGHT_WHEEL;
+    secondPowerMotor = MOTOR_LEFT_WHEEL;
+  }
+
+  while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == OFF && digitalRead(FRONT_LEFT_GROUND_SWITCH) == OFF)
+  {
+    motor.speed(firstPowerMotor, INTERSECTION_TURN_SPEED);
+    motor.stop(secondPowerMotor);
+    count++;
+  }
+  while (count != 0)
+  {
+    motor.stop(firstPowerMotor);
+    motor.speed(secondPowerMotor, INTERSECTION_TURN_SPEED);
+    count--;
+  }
 }
 
 /*
    function - xPointTurn
 
-   Performs (3 or 5) point turn depending !
+   Performs (3 or 5) point turn depending on whether a cliff is present!
 */
 void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
-  if lastPickUpDirection == LEFT
+  int powerMotor;
+  int pivotMotor;
+  if (lastPickUpDirection == RIGHT)
   {
-    firstTurn = RIGHT;
-    powerMotor = MOTOR_LEFT_WHEEL;
-    pivotMotor = MOTOR_RIGHT_WHEEL;
-  }
-  else
-  {
-    firstTurn = LEFT;
+    direction_e firstTurn = LEFT;
     powerMotor = MOTOR_RIGHT_WHEEL;
     pivotMotor = MOTOR_LEFT_WHEEL;
   }
+  else
+  {
+    direction_e firstTurn = RIGHT;
+    powerMotor = MOTOR_LEFT_WHEEL;
+    pivotMotor = MOTOR_RIGHT_WHEEL;
+  }
 
   
-  if numPoints == 3
+  if (numPoints == 3)
   //Three-point turn
   {
     while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == OFF && digitalRead(FRONT_LEFT_GROUND_SWITCH) == OFF)
@@ -201,7 +229,7 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
       motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
       motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED/2);
     }
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) = ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) = ON)
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
     {
       motor.speed(powerMotor, INTERSECTION_TURN_SPEED/2);
       motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED);
@@ -215,22 +243,22 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
   else
   //Five-point turn
   {
-    while (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) = ON && digitalRead(FRONT_LEFT_BUMPER_SWITCH) = ON)
+    while (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON && digitalRead(FRONT_LEFT_BUMPER_SWITCH) == ON)
     {
       motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
       motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED/2);
     }
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) = ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) = ON)
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
     {
       motor.speed(powerMotor, INTERSECTION_TURN_SPEED/2);
       motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED);
     }
-    while (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) = ON && digitalRead(FRONT_LEFT_BUMPER_SWITCH) = ON)
+    while (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON && digitalRead(FRONT_LEFT_BUMPER_SWITCH) == ON)
     {
       motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
       motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED/2);
     }
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) = ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) = ON)
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
     {
       motor.speed(powerMotor, INTERSECTION_TURN_SPEED/2);
       motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED);

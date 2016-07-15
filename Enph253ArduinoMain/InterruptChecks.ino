@@ -19,6 +19,7 @@ void processInterrupts() {
     dollHandler();
   }
 
+/*
   // testing stop switch
   if (!digitalRead(TEST_STOP_BUTTON))
   {
@@ -30,6 +31,7 @@ void processInterrupts() {
     LCD.print("Stopped");
     delay(2000);
   }
+*/
 
   // check for intersection
   int intersectionQRDRight = analogRead(INTERSECTION_QRD_RIGHT);
