@@ -9,6 +9,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   RCServo1.write(pickUp.frontPositionAngle);
 
   byte positionStep = pickUp.backPositionAngle >> 3;
+  byte tick = 0;
 
   while (positionStep < pickUp.backPositionAngle)
   {
@@ -16,13 +17,25 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
     positionStep += positionStep;
   }
 
-  clawCommand(CLOSE);
+  delay(ARM_WAIT_TICK);
+
+  tick = clawCommand(CLOSE,tick);
+
+  delay(ARM_WAIT_TICK);
 
   RCServo0.write(dropOff.baseRotationAngle);
   RCServo1.write(dropOff.frontPositionAngle);
   RCServo2.write(dropOff.backPositionAngle);
 
-  clawCommand(OPEN);
+  delay(ARM_WAIT_TICK);
+
+  clawCommand(OPEN,tick);
+
+  delay(ARM_WAIT_TICK);
+
+  RCServo0.write(reset.baseRotationAngle);
+  RCServo1.write(reset.frontPositionAngle);
+  RCServo2.write(reset.backPositionAngle);
 }
 
 /*
@@ -30,16 +43,30 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
    Open or closes claw.
 */
-void clawCommand(clamp_e command)
+int clawCommand(clamp_e command, byte tick)
 {
+  int count = 0;
   if (command == CLOSE)
   {
     // close claw
+    motor.speed(MOTOR_CLAW, CLAW_SPEED);
+    while (digitalRead(CLAW_SWITCH) == ON)
+    {
+      delay(MOTOR_WRITE_WAIT_TICK);
+      count++;
+    }
   }
   else
   {
     // open claw
+    motor.speed(MOTOR_CLAW, -CLAW_SPEED);
+    while (tick != 0)
+    {
+      delay(MOTOR_WRITE_WAIT_TICK);
+      tick--;
+    }
   }
+  return count;
 }
 
 /*
@@ -51,11 +78,13 @@ void conveyorCommand(rotation_e command)
 {
   if (command == STARBOARD)
   {
-    // rotate right
+    motor.speed(MOTOR_CONVEYOR, CONVEYOR_SPEED);
+    delay(CONVEYOR_TIME_TICK);
   }
   else
   {
-    // rotate left
+    motor.speed(MOTOR_CONVEYOR, -CONVEYOR_SPEED);
+    delay(CONVEYOR_TIME_TICK);
   }
 }
 
