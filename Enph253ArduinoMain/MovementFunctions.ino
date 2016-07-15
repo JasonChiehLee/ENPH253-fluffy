@@ -194,26 +194,51 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
 
   
   if numPoints == 3
+  //Three-point turn
   {
-    //Three-point turn
     while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == OFF && digitalRead(FRONT_LEFT_GROUND_SWITCH) == OFF)
     {
       motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
-      motor.speed(powerMotor, -INTERSECTION_TURN_SPEED/2);
+      motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED/2);
     }
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) = OFF && digitalRead(BACK_LEFT_BUMPER_SWITCH) = OFF)
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) = ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) = ON)
     {
       motor.speed(powerMotor, INTERSECTION_TURN_SPEED/2);
-      motor.speed(powerMotor, -INTERSECTION_TURN_SPEED);
+      motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED);
     }
     while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
     {
       motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
-      motor.speed(powerMotor, -INTERSECTION_TURN_SPEED/2);
+      motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED/2);
     }
   }
   else
+  //Five-point turn
   {
-    //Five-point turn
+    while (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) = ON && digitalRead(FRONT_LEFT_BUMPER_SWITCH) = ON)
+    {
+      motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
+      motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED/2);
+    }
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) = ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) = ON)
+    {
+      motor.speed(powerMotor, INTERSECTION_TURN_SPEED/2);
+      motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED);
+    }
+    while (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) = ON && digitalRead(FRONT_LEFT_BUMPER_SWITCH) = ON)
+    {
+      motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
+      motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED/2);
+    }
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) = ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) = ON)
+    {
+      motor.speed(powerMotor, INTERSECTION_TURN_SPEED/2);
+      motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED);
+    }
+    while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
+    {
+      motor.speed(powerMotor, INTERSECTION_TURN_SPEED);
+      motor.speed(pivotMotor, -INTERSECTION_TURN_SPEED/2);
+    }
   }
 }
