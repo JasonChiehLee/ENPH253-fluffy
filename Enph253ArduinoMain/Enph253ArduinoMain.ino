@@ -19,7 +19,6 @@ void loop()
   //Main code, repeated
   //LCD.clear();
   //LCD.home();
-  dir = 1;
 
   passengerAquire(rightDropOff, rightDropOff);
   //tapeFollow();

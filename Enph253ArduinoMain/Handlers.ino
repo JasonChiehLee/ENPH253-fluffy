@@ -74,4 +74,5 @@ void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropO
 {
   centreAlign(dollSide);
   passengerAquire(pickUp, dropOff);
+  setLoadStatus(TRUE);
 }

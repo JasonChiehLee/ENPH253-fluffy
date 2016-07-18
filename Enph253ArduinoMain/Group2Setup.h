@@ -80,8 +80,11 @@ enum rotation_e {
   STARBOARD,PORT
 };
 
-bool dir = 0;
+#define TRUE 1
+#define FALSE 0
 
-void setDir(bool newDir){
-  dir = newDir;  
+bool loadStatus = FALSE;
+
+void setLoadStatus(bool newLoadStatus){
+  loadStatus = newLoadStatus;  
 };

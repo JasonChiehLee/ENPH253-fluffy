@@ -15,7 +15,7 @@ void processInterrupts()
 {
   // check load status
   armPosition_t dropOff = rightDropOff;
-  if (dir != 0)
+  if (loadStatus == TRUE)
   {
     dropOff = leftDropOff;
   }
