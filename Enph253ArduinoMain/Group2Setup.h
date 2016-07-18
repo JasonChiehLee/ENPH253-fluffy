@@ -59,16 +59,16 @@ enum direction_e {
 struct armPosition_t
 {
   byte baseRotationAngle;
-  byte frontPositionAngle;
   byte backPositionAngle;
+  byte frontPositionAngle;
 };
 
 // Arm position
 armPosition_t reset = {90, 10, 150};
-armPosition_t rightPickUp = {0, 80, 50};
-armPosition_t rightDropOff = {80, 60, 90};
-armPosition_t leftDropOff = {100, 60, 90};
-armPosition_t leftPickUp = {180, 80, 50};
+armPosition_t rightPickUp = {0, 50, 80};
+armPosition_t leftPickUp = {180, 50, 80};
+armPosition_t rightDropOff = {80, 90, 80};
+armPosition_t leftDropOff = {100, 90, 80};
 
 enum clamp_e {
   CLOSE,OPEN
