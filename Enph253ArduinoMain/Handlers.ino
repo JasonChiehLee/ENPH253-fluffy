@@ -72,6 +72,5 @@ void intersectionHandler()
 */
 void dollHandler()
 {
-
+  
 }
-

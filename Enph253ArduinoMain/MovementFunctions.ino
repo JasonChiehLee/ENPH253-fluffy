@@ -287,3 +287,31 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
     }
   }
 }
+
+void centreAlign(direction_e pickUp)
+{
+  int currentRead = 0;
+  if (pickUp == RIGHT)
+  {
+    currentRead = analogRead(SIDE_QSD_RIGHT);
+    while (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
+    {
+      delay(MOTOR_WRITE_WAIT_TICK);
+      currentRead = analogRead(SIDE_QSD_RIGHT);
+    }
+    motor.stop(MOTOR_RIGHT_WHEEL);
+    motor.stop(MOTOR_LEFT_WHEEL);
+  }
+  else
+  {
+    currentRead = analogRead(SIDE_QSD_LEFT);
+    while (analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
+    {
+      delay(MOTOR_WRITE_WAIT_TICK);
+      currentRead = analogRead(SIDE_QSD_LEFT);
+    }
+    motor.stop(MOTOR_RIGHT_WHEEL);
+    motor.stop(MOTOR_LEFT_WHEEL);
+  }
+}
+
