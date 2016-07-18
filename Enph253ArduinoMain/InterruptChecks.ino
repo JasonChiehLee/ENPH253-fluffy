@@ -19,20 +19,6 @@ void processInterrupts() {
     dollHandler();
   }
 
-/*
-  // testing stop switch
-  if (!digitalRead(TEST_STOP_BUTTON))
-  {
-    // stop the bot
-    hardStop();
-    // show that we've stopped
-    LCD.clear();
-    LCD.home();
-    LCD.print("Stopped");
-    delay(2000);
-  }
-*/
-
   // check for intersection
   int intersectionQRDRight = analogRead(INTERSECTION_QRD_RIGHT);
   int intersectionQRDLeft = analogRead(INTERSECTION_QRD_LEFT);
