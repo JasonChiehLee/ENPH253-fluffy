@@ -70,7 +70,8 @@ void intersectionHandler()
 
    Carries out aqcuisition actions when called
 */
-void dollHandler()
+void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropOff)
 {
-  
+  centreAlign(dollSide);
+  passengerAquire(pickUp, dropOff);
 }

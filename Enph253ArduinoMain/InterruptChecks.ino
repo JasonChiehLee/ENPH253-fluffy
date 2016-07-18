@@ -11,12 +11,23 @@
 
    PLEASE ADD ANY NEW INTERRUPTS TO THIS LIST
 */
-void processInterrupts() {
-
-  // check for adjacent dolls
-  if (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD || analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
+void processInterrupts() 
+{
+  // check load status
+  armPosition_t dropOff = rightDropOff;
+  if (dir != 0)
   {
-    dollHandler();
+    dropOff = leftDropOff;
+  }
+  
+  // check for adjacent dolls
+  if (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
+  {
+    dollHandler(RIGHT, rightPickUp, dropOff);
+  }
+  else if (analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
+  {
+    dollHandler(LEFT, leftPickUp, dropOff);
   }
 
   // check for intersection

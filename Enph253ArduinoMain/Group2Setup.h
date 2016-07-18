@@ -1,3 +1,5 @@
+#pragma once 
+
 //DIGITAL INPUTS
 #define FRONT_RIGHT_GROUND_SWITCH 0
 #define FRONT_LEFT_GROUND_SWITCH 1
@@ -76,4 +78,10 @@ enum clamp_e {
 
 enum rotation_e {
   STARBOARD,PORT
+};
+
+bool dir = 0;
+
+void setDir(bool newDir){
+  dir = newDir;  
 };
