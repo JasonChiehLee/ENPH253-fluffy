@@ -244,7 +244,7 @@ void xPointTurn(int numPoints) {
 
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
+    while (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
@@ -282,7 +282,7 @@ void xPointTurn(int numPoints) {
 
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
+    while (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }

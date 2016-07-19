@@ -10,8 +10,8 @@ void intersectionHandler()
 
   for (int t = 0; t < HARD_STOP_WAIT_TIME; t += HARD_STOP_WAIT_TIME >> 4)
   {
-    ((analogRead(INTERSECTION_QRD_RIGHT) > QRD_GROUND_THRESHOLD) || rightTurn) ? rightTurn = true : rightTurn = false;
-    ((analogRead(INTERSECTION_QRD_LEFT) > QRD_GROUND_THRESHOLD) || leftTurn) ? leftTurn = true : leftTurn = false;
+    ((digitalRead(INTERSECTION_QRD_RIGHT) == ON) || rightTurn) ? rightTurn = true : rightTurn = false;
+    ((digitalRead(INTERSECTION_QRD_LEFT) == ON) || leftTurn) ? leftTurn = true : leftTurn = false;
     delay(HARD_STOP_WAIT_TIME >> 4);
   }
 
@@ -21,12 +21,12 @@ void intersectionHandler()
   // Let the stop happen, and check which directions we can turn
   for (int t = 0; t < HARD_STOP_WAIT_TIME; t += HARD_STOP_WAIT_TIME >> 4)
   {
-    ((analogRead(INTERSECTION_QRD_RIGHT) > QRD_GROUND_THRESHOLD) || rightTurn) ? rightTurn = true : rightTurn = false;
-    ((analogRead(INTERSECTION_QRD_LEFT) > QRD_GROUND_THRESHOLD) || leftTurn) ? leftTurn = true : leftTurn = false;
+    ((digitalRead(INTERSECTION_QRD_RIGHT) == ON) || rightTurn) ? rightTurn = true : rightTurn = false;
+    ((digitalRead(INTERSECTION_QRD_LEFT) == ON) || leftTurn) ? leftTurn = true : leftTurn = false;
     delay(HARD_STOP_WAIT_TIME >> 4);
   }
 
-  (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > QRD_GROUND_THRESHOLD || analogRead(TAPE_FOLLOWING_QRD_LEFT) > QRD_GROUND_THRESHOLD) ? straightThrough = true : straightThrough = false;
+  (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON || digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON) ? straightThrough = true : straightThrough = false;
 
   // Compute optimal direction
   // Temporarily prioritizing left-straight-right until sensors are online
