@@ -26,19 +26,19 @@ void tapeFollow()
   int proportionalGain = knob(6) >> 2;
   int derivativeGain = knob(7) >> 2;
 
-  int rightQRD = analogRead(TAPE_FOLLOWING_QRD_RIGHT);
-  int leftQRD = analogRead(TAPE_FOLLOWING_QRD_LEFT);
+  int rightQRD = digitalRead(TAPE_FOLLOWING_QRD_RIGHT);
+  int leftQRD = digitalRead(TAPE_FOLLOWING_QRD_LEFT);
 
   int currentError = 0;
 
   // Proportionality
-  if (leftQRD > TAPE_FOLLOWING_TRESHOLD && rightQRD > TAPE_FOLLOWING_TRESHOLD)
+  if (leftQRD == ON && rightQRD == ON)
     currentError = 0;
-  else if (leftQRD > TAPE_FOLLOWING_TRESHOLD && rightQRD <= TAPE_FOLLOWING_TRESHOLD)
+  else if (leftQRD == ON && rightQRD == OFF)
     currentError = 1;
-  else if (leftQRD <= TAPE_FOLLOWING_TRESHOLD && rightQRD > TAPE_FOLLOWING_TRESHOLD)
+  else if (leftQRD == OFF && rightQRD == ON)
     currentError = -1;
-  else if (leftQRD <= TAPE_FOLLOWING_TRESHOLD && rightQRD <= TAPE_FOLLOWING_TRESHOLD)
+  else if (leftQRD == OFF && rightQRD == OFF)
   {
     // Both off, check history and correct
     if (tapeFollowing_lastError > 0)
@@ -132,7 +132,7 @@ void intersectionTurn(direction_e turnDirection) {
     */
     delay(INTERSECTION_TURN_TIME);
     // wait until at least one QRD is on again
-    while ((analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD) && (analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD))
+    while ((digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF) && (digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF))
     {
       delay(INTERSECTION_TURN_WAIT_TICK);
     }
@@ -152,7 +152,7 @@ void intersectionTurn(direction_e turnDirection) {
     */
     delay(INTERSECTION_TURN_TIME);
     // wait until both QRDs are on again
-    while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
+    while (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF)
     {
       delay(INTERSECTION_TURN_WAIT_TICK);
     }

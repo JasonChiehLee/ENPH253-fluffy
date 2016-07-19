@@ -30,14 +30,14 @@ void processInterrupts()
     }
 
     // check for adjacent dolls
-    if (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
+    if (0)//analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
     {
       LCD.clear();
       LCD.home();
       LCD.print("DOLL AQUISITION");
       dollHandler(RIGHT, rightPickUp, dropOff);
     }
-    else if (analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
+    else if (0)//analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
     {
       LCD.clear();
       LCD.home();
@@ -46,7 +46,7 @@ void processInterrupts()
     }
   }
   // for collisions
-  if (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON || digitalRead(FRONT_LEFT_BUMPER_SWITCH))
+  if (0)//digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON || digitalRead(FRONT_LEFT_BUMPER_SWITCH))
   {
     motor.stop(MOTOR_RIGHT_WHEEL);
     motor.stop(MOTOR_LEFT_WHEEL);
