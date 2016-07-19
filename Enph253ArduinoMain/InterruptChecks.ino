@@ -23,13 +23,26 @@ void processInterrupts()
   // check for adjacent dolls
   if (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
   {
+    LCD.print("DOLL AQUISITION");
     dollHandler(RIGHT, rightPickUp, dropOff);
   }
   else if (analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
   {
     dollHandler(LEFT, leftPickUp, dropOff);
+    LCD.print("DOLL AQUISITION");
   }
 
+  if (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON || digitalRead(FRONT_LEFT_BUMPER_SWITCH))
+  {
+    motor.stop(MOTOR_RIGHT_WHEEL);
+    motor.stop(MOTOR_LEFT_WHEEL);
+    delay(BACKUP_WAIT_TICK);
+    motor.speed(MOTOR_RIGHT_WHEEL, -UTURN_SPEED);
+    motor.speed(MOTOR_LEFT_WHEEL, -UTURN_SPEED);
+    delay(BACKUP_WAIT_TICK);
+    xPointTurn(previousTurn,5);
+  }
+    
   // check for intersection
   int intersectionQRDRight = analogRead(INTERSECTION_QRD_RIGHT);
   int intersectionQRDLeft = analogRead(INTERSECTION_QRD_LEFT);

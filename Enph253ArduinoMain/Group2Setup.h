@@ -53,6 +53,7 @@
 #define INTERSECTION_TURN_TIME 500
 #define MOTOR_WRITE_WAIT_TICK 5
 #define ARM_WAIT_TICK 500
+#define BACKUP_WAIT_TICK 1000
 
 enum direction_e {
   RIGHT,LEFT,FORWARD,BACKWARD
@@ -84,7 +85,13 @@ enum rotation_e {
 #define FALSE 0
 
 bool loadStatus = FALSE;
-
 void setLoadStatus(bool newLoadStatus){
   loadStatus = newLoadStatus;  
 };
+
+direction_e previousTurn = RIGHT;
+void setPreviousTurn(direction_e newPreviousTurn)
+{
+  previousTurn = newPreviousTurn;
+}
+

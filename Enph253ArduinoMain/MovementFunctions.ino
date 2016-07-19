@@ -137,6 +137,7 @@ void intersectionTurn(direction_e turnDirection) {
       delay(INTERSECTION_TURN_WAIT_TICK);
     }
     motor.stop(MOTOR_RIGHT_WHEEL);
+    setPreviousTurn(LEFT);
   }
   else if (turnDirection == RIGHT)
   {
@@ -156,6 +157,7 @@ void intersectionTurn(direction_e turnDirection) {
       delay(INTERSECTION_TURN_WAIT_TICK);
     }
     motor.stop(MOTOR_LEFT_WHEEL);
+    setPreviousTurn(RIGHT);
   }
   else // FORWARD
   {
@@ -222,14 +224,13 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
     powerMotor = MOTOR_LEFT_WHEEL;
     pivotMotor = MOTOR_RIGHT_WHEEL;
   }
-
   
   if (numPoints == 3)
   //Three-point turn
   {
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == OFF && digitalRead(FRONT_LEFT_GROUND_SWITCH) == OFF)
+    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == ON && digitalRead(FRONT_LEFT_GROUND_SWITCH) == ON && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
@@ -253,7 +254,7 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
   {
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON && digitalRead(FRONT_LEFT_BUMPER_SWITCH) == ON)
+    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == ON && digitalRead(FRONT_LEFT_GROUND_SWITCH) == ON && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
@@ -267,7 +268,7 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
 
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED/2);
-    while (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON && digitalRead(FRONT_LEFT_BUMPER_SWITCH) == ON)
+    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == ON && digitalRead(FRONT_LEFT_GROUND_SWITCH) == ON && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }

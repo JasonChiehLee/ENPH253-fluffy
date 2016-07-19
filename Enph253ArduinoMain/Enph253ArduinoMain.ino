@@ -20,7 +20,6 @@ void loop()
   //LCD.clear();
   //LCD.home();
 
-  passengerAquire(rightDropOff, rightDropOff);
-  //tapeFollow();
+  //passengerAquire(rightDropOff, rightDropOff);
+  tapeFollow();
 }
-
