@@ -106,7 +106,7 @@ void tapeFollow()
    Stops the wheels
 */
 void hardStop() {
-  
+
   motor.stop(MOTOR_RIGHT_WHEEL);
   motor.stop(MOTOR_LEFT_WHEEL);
 
@@ -125,10 +125,10 @@ void intersectionTurn(direction_e turnDirection) {
     motor.stop(MOTOR_LEFT_WHEEL);
     // wait until both QRDs are off
     /*
-    while ((analogRead(TAPE_FOLLOWING_QRD_LEFT) > TAPE_FOLLOWING_TRESHOLD) || (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > TAPE_FOLLOWING_TRESHOLD))
-    {
+      while ((analogRead(TAPE_FOLLOWING_QRD_LEFT) > TAPE_FOLLOWING_TRESHOLD) || (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > TAPE_FOLLOWING_TRESHOLD))
+      {
       delay(INTERSECTION_TURN_WAIT_TICK);
-    }
+      }
     */
     delay(INTERSECTION_TURN_TIME);
     // wait until at least one QRD is on again
@@ -145,10 +145,10 @@ void intersectionTurn(direction_e turnDirection) {
     motor.speed(MOTOR_LEFT_WHEEL, INTERSECTION_TURN_SPEED);
     // wait until both QRDs are off
     /*
-    while ((analogRead(TAPE_FOLLOWING_QRD_LEFT) > TAPE_FOLLOWING_TRESHOLD) || (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > TAPE_FOLLOWING_TRESHOLD))
-    {
+      while ((analogRead(TAPE_FOLLOWING_QRD_LEFT) > TAPE_FOLLOWING_TRESHOLD) || (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > TAPE_FOLLOWING_TRESHOLD))
+      {
       delay(INTERSECTION_TURN_WAIT_TICK);
-    }
+      }
     */
     delay(INTERSECTION_TURN_TIME);
     // wait until both QRDs are on again
@@ -167,7 +167,7 @@ void intersectionTurn(direction_e turnDirection) {
 }
 
 /*
-   function - pullover
+   function - pullOver
 
    Pull over in a specified direction and uses the front, ground switches to find edge of surface!
 */
@@ -175,7 +175,7 @@ void pullOver(direction_e pulloverDirection) {
   int count = 0;
   byte firstPowerMotor;
   byte secondPowerMotor;
-  
+
   if (pulloverDirection == RIGHT)
   {
     firstPowerMotor = MOTOR_LEFT_WHEEL;
@@ -194,7 +194,7 @@ void pullOver(direction_e pulloverDirection) {
     delay(MOTOR_WRITE_WAIT_TICK);
     count++;
   }
-  
+
   motor.stop(firstPowerMotor);
   motor.speed(secondPowerMotor, PULLOVER_SPEED);
   while (count != 0)
@@ -224,9 +224,9 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
     powerMotor = MOTOR_LEFT_WHEEL;
     pivotMotor = MOTOR_RIGHT_WHEEL;
   }
-  
+
   if (numPoints == 3)
-  //Three-point turn
+    //Three-point turn
   {
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
@@ -234,14 +234,14 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
-    
+
     motor.speed(powerMotor, UTURN_SPEED >> 1);
     motor.speed(pivotMotor, -UTURN_SPEED);
     while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
-    
+
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
     while (analogRead(TAPE_FOLLOWING_QRD_RIGHT) < TAPE_FOLLOWING_TRESHOLD && analogRead(TAPE_FOLLOWING_QRD_LEFT) < TAPE_FOLLOWING_TRESHOLD)
@@ -250,7 +250,7 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
     }
   }
   else
-  //Five-point turn
+    //Five-point turn
   {
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
@@ -267,7 +267,7 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
     }
 
     motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED/2);
+    motor.speed(pivotMotor, -UTURN_SPEED / 2);
     while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == ON && digitalRead(FRONT_LEFT_GROUND_SWITCH) == ON && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
@@ -289,6 +289,11 @@ void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
   }
 }
 
+/*
+   function - centreAlign
+
+   Centres robot adjacent to doll!
+*/
 void centreAlign(direction_e pickUp)
 {
   int currentRead = 0;

@@ -14,7 +14,7 @@ void intersectionHandler()
     ((analogRead(INTERSECTION_QRD_LEFT) > QRD_GROUND_THRESHOLD) || leftTurn) ? leftTurn = true : leftTurn = false;
     delay(HARD_STOP_WAIT_TIME >> 4);
   }
-  
+
   // Halt the bot
   hardStop();
 

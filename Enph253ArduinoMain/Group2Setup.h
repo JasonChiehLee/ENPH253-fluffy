@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 //DIGITAL INPUTS
 #define FRONT_RIGHT_GROUND_SWITCH 0
@@ -19,6 +19,7 @@
 #define INTERSECTION_QRD_LEFT 3
 #define SIDE_QSD_RIGHT 4
 #define SIDE_QSD_LEFT 5
+#define TOP_QSD 6
 
 //MOTOR OUTPUTS
 #define MOTOR_RIGHT_WHEEL 0
@@ -55,8 +56,10 @@
 #define ARM_WAIT_TICK 500
 #define BACKUP_WAIT_TICK 1000
 
+#define LOST_TICK 1000
+
 enum direction_e {
-  RIGHT,LEFT,FORWARD,BACKWARD
+  RIGHT, LEFT, FORWARD, BACKWARD
 };
 
 struct armPosition_t
@@ -74,24 +77,36 @@ armPosition_t rightDropOff = {80, 90, 80};
 armPosition_t leftDropOff = {100, 90, 80};
 
 enum clamp_e {
-  CLOSE,OPEN
+  CLOSE, OPEN
 };
 
 enum rotation_e {
-  STARBOARD,PORT
+  STARBOARD, PORT
 };
 
 #define TRUE 1
 #define FALSE 0
 
 bool loadStatus = FALSE;
-void setLoadStatus(bool newLoadStatus){
-  loadStatus = newLoadStatus;  
+void setLoadStatus(bool newLoadStatus) {
+  loadStatus = newLoadStatus;
 };
 
 direction_e previousTurn = RIGHT;
 void setPreviousTurn(direction_e newPreviousTurn)
 {
   previousTurn = newPreviousTurn;
+}
+
+direction_e nextTurn = RIGHT;
+void setNextTurn(direction_e newNextTurn)
+{
+  nextTurn = newNextTurn;
+}
+
+bool dropStatus = FALSE;
+void setStatus(bool newDropStatus)
+{
+  dropStatus = newDropStatus;
 }
 

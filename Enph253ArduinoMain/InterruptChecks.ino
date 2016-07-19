@@ -11,27 +11,34 @@
 
    PLEASE ADD ANY NEW INTERRUPTS TO THIS LIST
 */
-void processInterrupts() 
+void processInterrupts()
 {
-  // check load status
-  armPosition_t dropOff = rightDropOff;
-  if (loadStatus == TRUE)
+  if (dropStatus == TRUE)
   {
-    dropOff = leftDropOff;
+    
   }
-  
-  // check for adjacent dolls
-  if (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
+  else
   {
-    LCD.print("DOLL AQUISITION");
-    dollHandler(RIGHT, rightPickUp, dropOff);
-  }
-  else if (analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
-  {
-    dollHandler(LEFT, leftPickUp, dropOff);
-    LCD.print("DOLL AQUISITION");
-  }
+    // check load status
+    armPosition_t dropOff = rightDropOff;
+    if (loadStatus == TRUE)
+    {
+      dropOff = leftDropOff;
+    }
 
+    // check for adjacent dolls
+    if (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
+    {
+      LCD.print("DOLL AQUISITION");
+      dollHandler(RIGHT, rightPickUp, dropOff);
+    }
+    else if (analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
+    {
+      dollHandler(LEFT, leftPickUp, dropOff);
+      LCD.print("DOLL AQUISITION");
+    }
+  }
+  // for collisions
   if (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON || digitalRead(FRONT_LEFT_BUMPER_SWITCH))
   {
     motor.stop(MOTOR_RIGHT_WHEEL);
@@ -40,9 +47,9 @@ void processInterrupts()
     motor.speed(MOTOR_RIGHT_WHEEL, -UTURN_SPEED);
     motor.speed(MOTOR_LEFT_WHEEL, -UTURN_SPEED);
     delay(BACKUP_WAIT_TICK);
-    xPointTurn(previousTurn,5);
+    xPointTurn(previousTurn, 5);
   }
-    
+
   // check for intersection
   int intersectionQRDRight = analogRead(INTERSECTION_QRD_RIGHT);
   int intersectionQRDLeft = analogRead(INTERSECTION_QRD_LEFT);

@@ -19,7 +19,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
   delay(ARM_WAIT_TICK);
 
-  tick = clawCommand(CLOSE,tick);
+  tick = clawCommand(CLOSE, tick);
 
   delay(ARM_WAIT_TICK);
 
@@ -29,7 +29,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
   delay(ARM_WAIT_TICK);
 
-  clawCommand(OPEN,tick);
+  clawCommand(OPEN, tick);
 
   delay(ARM_WAIT_TICK);
 
