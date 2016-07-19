@@ -117,3 +117,9 @@ void setTravelAngle(byte newTravelAngle)
   travelAngle = newTravelAngle;
 }
 
+int clawClampTick = 0;
+void setClawClampTick(int newClawClampTick)
+{
+  clawClampTick = newClawClampTick;
+}
+

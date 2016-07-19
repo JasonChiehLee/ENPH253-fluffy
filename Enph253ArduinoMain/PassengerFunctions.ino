@@ -9,7 +9,6 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   RCServo1.write(pickUp.frontPositionAngle);
 
   byte positionStep = pickUp.backPositionAngle >> 3;
-  byte tick = 0;
 
   while (positionStep < pickUp.backPositionAngle)
   {
@@ -19,7 +18,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
   delay(ARM_WAIT_TICK);
 
-  tick = clawCommand(CLOSE, tick);
+  clawCommand(CLOSE);
 
   delay(ARM_WAIT_TICK);
 
@@ -29,7 +28,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
   delay(ARM_WAIT_TICK);
 
-  clawCommand(OPEN, tick);
+  clawCommand(OPEN);
 
   delay(ARM_WAIT_TICK);
 
@@ -43,9 +42,8 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
    Open or closes claw.
 */
-int clawCommand(clamp_e command, byte tick)
+void clawCommand(clamp_e command)
 {
-  int count = 0;
   if (command == CLOSE)
   {
     // close claw
@@ -53,20 +51,19 @@ int clawCommand(clamp_e command, byte tick)
     while (digitalRead(CLAW_SWITCH) == ON)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
-      count++;
+      setClawClampTick(clawClampTick + 1);
     }
   }
   else
   {
     // open claw
     motor.speed(MOTOR_CLAW, -CLAW_SPEED);
-    while (tick != 0)
+    while (clawClampTick != 0)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
-      tick--;
+      setClawClampTick(clawClampTick - 1);
     }
   }
-  return count;
 }
 
 /*

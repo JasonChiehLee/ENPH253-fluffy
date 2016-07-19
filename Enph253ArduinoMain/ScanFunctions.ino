@@ -25,7 +25,7 @@ void dropOffScan()
 {
   byte angle = 0;
   byte varAngle = 0;
-  byte largestSignal = 0;
+  int largestSignal = 0;
 
   RCServo0.write(varAngle);
 
