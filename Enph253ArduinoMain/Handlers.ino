@@ -32,34 +32,31 @@ void intersectionHandler()
   // Temporarily prioritizing left-straight-right until sensors are online
   direction_e nextDirection = FORWARD;
 
-
-  if (leftTurn)
+  nextDirection = determineDirection(rightTurn, leftTurn, straightThrough);
+  if (nextDirection == LEFT)
   {
     LCD.clear();
     LCD.home();
     LCD.print("LEFT");
-    nextDirection = LEFT;
   }
-  else if (straightThrough)
+  else if (nextDirection == FORWARD)
   {
     LCD.clear();
     LCD.home();
     LCD.print("FORWARD");
-    nextDirection = FORWARD;
+
   }
-  else if (rightTurn)
+  else if (nextDirection == RIGHT)
   {
     LCD.clear();
     LCD.home();
     LCD.print("RIGHT");
-    nextDirection = RIGHT;
   }
   else
   {
     LCD.clear();
     LCD.home();
-    LCD.print("FORWARD");
-    nextDirection = FORWARD; // should never hit this one
+    LCD.print("KILL YOURSELF");
   }
 
   // Move to that direction
