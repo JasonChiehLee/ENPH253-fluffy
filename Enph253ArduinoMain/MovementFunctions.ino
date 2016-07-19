@@ -209,20 +209,20 @@ void pullOver(direction_e pulloverDirection) {
 
    Performs (3 or 5) point turn depending on whether a cliff is present!
 */
-void xPointTurn(direction_e lastPickUpDirection, int numPoints) {
+void xPointTurn(int numPoints) {
   byte powerMotor;
   byte pivotMotor;
-  if (lastPickUpDirection == RIGHT)
-  {
-    direction_e firstTurn = LEFT;
-    powerMotor = MOTOR_RIGHT_WHEEL;
-    pivotMotor = MOTOR_LEFT_WHEEL;
-  }
-  else
+  if (previousTurn == RIGHT)
   {
     direction_e firstTurn = RIGHT;
     powerMotor = MOTOR_LEFT_WHEEL;
     pivotMotor = MOTOR_RIGHT_WHEEL;
+  }
+  else
+  {
+    direction_e firstTurn = LEFT;
+    powerMotor = MOTOR_RIGHT_WHEEL;
+    pivotMotor = MOTOR_LEFT_WHEEL;
   }
 
   if (numPoints == 3)

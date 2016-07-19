@@ -10,10 +10,11 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
   byte positionStep = pickUp.backPositionAngle >> 3;
 
-  while (positionStep < pickUp.backPositionAngle)
+  while (positionStep < pickUp.backPositionAngle || digitalRead(DOLL_SWITCH) == ON)
   {
     RCServo2.write(positionStep);
     positionStep += positionStep;
+    delay(ARM_POSITION_TICK);
   }
 
   delay(ARM_WAIT_TICK);

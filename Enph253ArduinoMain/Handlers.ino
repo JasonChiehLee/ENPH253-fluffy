@@ -32,6 +32,7 @@ void intersectionHandler()
   // Temporarily prioritizing left-straight-right until sensors are online
   direction_e nextDirection = FORWARD;
 
+
   if (leftTurn)
   {
     LCD.clear();
@@ -63,6 +64,74 @@ void intersectionHandler()
 
   // Move to that direction
   intersectionTurn(nextDirection);
+}
+
+/*
+   function - determineDirection
+
+   Determines direction to turn depending on available paths.
+*/
+direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean straightThrough)
+{
+  direction_e travelDirection = FORWARD;
+  if (travelAngle < THRESHOLDANGLE1)
+  {
+    if (leftTurn == true)
+    {
+      travelDirection = LEFT;
+    }
+    else if (straightThrough = true)
+    {
+      travelDirection = FORWARD;
+    }
+    else if (rightTurn == true)
+    {
+      travelDirection = RIGHT;
+    }
+    else
+    {
+      xPointTurn(5);
+    }
+  }
+  else if (travelAngle > THRESHOLDANGLE2)
+  {
+    if (rightTurn == true)
+    {
+      travelDirection = RIGHT;
+    }
+    else if (straightThrough = true)
+    {
+      travelDirection = FORWARD;
+    }
+    else if (leftTurn == true)
+    {
+      travelDirection = LEFT;
+    }
+    else
+    {
+      xPointTurn(5);
+    }
+  }
+  else if (travelAngle > THRESHOLDANGLE1 && travelAngle < THRESHOLDANGLE2)
+  {
+    if (straightThrough == true)
+    {
+      travelDirection = FORWARD;
+    }
+    else if (rightTurn = true)
+    {
+      travelDirection = RIGHT;
+    }
+    else if (leftTurn == true)
+    {
+      travelDirection = LEFT;
+    }
+    else
+    {
+      xPointTurn(5);
+    }
+  }
+  return travelDirection;
 }
 
 /*

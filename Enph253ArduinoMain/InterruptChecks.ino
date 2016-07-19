@@ -21,7 +21,7 @@ void processInterrupts()
   else
   {
     travelAngle = intersectionScan();
-    
+
     // check load status
     armPosition_t dropOff = rightDropOff;
     if (loadStatus == TRUE)
@@ -50,7 +50,7 @@ void processInterrupts()
     motor.speed(MOTOR_RIGHT_WHEEL, -UTURN_SPEED);
     motor.speed(MOTOR_LEFT_WHEEL, -UTURN_SPEED);
     delay(BACKUP_WAIT_TICK);
-    xPointTurn(previousTurn, 5);
+    xPointTurn(5);
   }
 
   // check for intersection
