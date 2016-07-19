@@ -13,12 +13,15 @@
 */
 void processInterrupts()
 {
+  byte travelAngle = 0;
   if (dropStatus == TRUE)
   {
-    
+    dropOffScan(); // also sets travel angle
   }
   else
   {
+    travelAngle = intersectionScan();
+    
     // check load status
     armPosition_t dropOff = rightDropOff;
     if (loadStatus == TRUE)

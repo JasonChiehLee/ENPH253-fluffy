@@ -19,7 +19,8 @@
 #define INTERSECTION_QRD_LEFT 3
 #define SIDE_QSD_RIGHT 4
 #define SIDE_QSD_LEFT 5
-#define TOP_QSD 6
+#define FRONT_QSD 6
+#define TOP_QSD 7
 
 //MOTOR OUTPUTS
 #define MOTOR_RIGHT_WHEEL 0
@@ -108,5 +109,11 @@ bool dropStatus = FALSE;
 void setStatus(bool newDropStatus)
 {
   dropStatus = newDropStatus;
+}
+
+byte travelAngle = 90;
+void setTravelAngle(byte newTravelAngle)
+{
+  travelAngle = newTravelAngle;
 }
 
