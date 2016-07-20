@@ -17,6 +17,9 @@
 #define ON 1
 #define OFF 0
 
+#define UNPRESS_YES 1
+#define PRESS_YES 0
+
 //ANALOG INPUTS
 #define SIDE_QSD_RIGHT 0
 #define SIDE_QSD_LEFT 1

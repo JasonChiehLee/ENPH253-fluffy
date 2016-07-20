@@ -46,7 +46,7 @@ void processInterrupts()
     }
   }
   // for collisions
-  if (0)//digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == ON || digitalRead(FRONT_LEFT_BUMPER_SWITCH))
+  if (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES || digitalRead(FRONT_LEFT_BUMPER_SWITCH == PRESS_YES))
   {
     motor.stop(MOTOR_RIGHT_WHEEL);
     motor.stop(MOTOR_LEFT_WHEEL);

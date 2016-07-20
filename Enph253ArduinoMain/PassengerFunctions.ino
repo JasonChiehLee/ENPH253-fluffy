@@ -10,7 +10,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
   byte positionStep = pickUp.backPositionAngle >> 3;
 
-  while (positionStep < pickUp.backPositionAngle || digitalRead(DOLL_SWITCH) == ON)
+  while (positionStep < pickUp.backPositionAngle && digitalRead(DOLL_SWITCH) == UNPRESS_YES)
   {
     RCServo2.write(positionStep);
     positionStep += positionStep;
@@ -49,7 +49,7 @@ void clawCommand(clamp_e command)
   {
     // close claw
     motor.speed(MOTOR_CLAW, CLAW_SPEED);
-    while (digitalRead(CLAW_SWITCH) == ON)
+    while (digitalRead(CLAW_SWITCH) == UNPRESS_YES)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
       setClawClampTick(clawClampTick + 1);

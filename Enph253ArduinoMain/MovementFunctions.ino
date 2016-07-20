@@ -189,7 +189,7 @@ void pullOver(direction_e pulloverDirection) {
 
   motor.speed(firstPowerMotor, PULLOVER_SPEED);
   motor.stop(secondPowerMotor);
-  while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == OFF && digitalRead(FRONT_LEFT_GROUND_SWITCH) == OFF)
+  while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES)
   {
     delay(MOTOR_WRITE_WAIT_TICK);
     count++;
@@ -230,14 +230,14 @@ void xPointTurn(int numPoints) {
   {
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == ON && digitalRead(FRONT_LEFT_GROUND_SWITCH) == ON && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF)
+    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
 
     motor.speed(powerMotor, UTURN_SPEED >> 1);
     motor.speed(pivotMotor, -UTURN_SPEED);
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
@@ -254,28 +254,28 @@ void xPointTurn(int numPoints) {
   {
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == ON && digitalRead(FRONT_LEFT_GROUND_SWITCH) == ON && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF)
+    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
 
     motor.speed(powerMotor, UTURN_SPEED >> 1);
     motor.speed(pivotMotor, -UTURN_SPEED);
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
 
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED / 2);
-    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == ON && digitalRead(FRONT_LEFT_GROUND_SWITCH) == ON && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == OFF)
+    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
 
     motor.speed(powerMotor, UTURN_SPEED >> 1);
     motor.speed(pivotMotor, -UTURN_SPEED);
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == ON && digitalRead(BACK_LEFT_BUMPER_SWITCH) == ON)
+    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
