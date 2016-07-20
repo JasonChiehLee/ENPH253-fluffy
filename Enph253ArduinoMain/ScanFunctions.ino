@@ -1,16 +1,41 @@
-# define INTERSECTION_SCAN_ANGLE_PARTITION 10
-# define INTERSECTION_SCAN_PARTITION_DELAY 50
 /*
    function - intersectionScan
 
-   Scans at an intersection using the specified analog input, if there are signals above the threshold, returns the angle for the highest signal.
-   If there are no signals above the threshold, returns 0.
-
-   Assumes the scanning servo is connected to port 0
+   Scans at an intersection using the specified analog input, sets the angle for the highest signal.
+   If there are no signals above the threshold, sets the angle as 90.
 */
 byte intersectionScan()
 {
+
   byte bestAngle = 90;
+
+  int one = analogRead(FRONT_QSD1);
+  int two = analogRead(FRONT_QSD2);
+  int three = analogRead(FRONT_QSD3);
+  int four = analogRead(FRONT_QSD4);
+  int five = analogRead(FRONT_QSD5);
+
+  if (one > two && one > three && one > four && one > five)
+  {
+    bestAngle = ONE_ANGLE;
+  }
+  else if (two > one && two > three && two > four && two > five)
+  {
+    bestAngle = TWO_ANGLE;
+  }
+  else if (three > one && three > two && three > four && three > five)
+  {
+    bestAngle = THREE_ANGLE;
+  }
+  else if (four > one && four > two && four > three && four > five)
+  {
+    bestAngle = FOUR_ANGLE;
+  }
+  else if (five > one && five > two && five > three && five > four)
+  {
+    bestAngle = FIVE_ANGLE;
+  }
+  
   setTravelAngle(bestAngle);
 }
 

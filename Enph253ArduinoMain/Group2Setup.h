@@ -31,6 +31,13 @@
 #define FRONT_QSD5 6
 #define TOP_QSD 6
 
+//FRONT QSD ANGLE
+#define ONE_ANGLE 30
+#define TWO_ANGLE 60
+#define THREE_ANGLE 90
+#define FOUR_ANGLE 120
+#define FIVE ANGLE 150
+
 //MOTOR OUTPUTS
 #define MOTOR_RIGHT_WHEEL 0
 #define MOTOR_LEFT_WHEEL 1
