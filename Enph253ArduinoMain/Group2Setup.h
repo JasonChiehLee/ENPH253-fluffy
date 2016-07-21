@@ -1,5 +1,8 @@
 #pragma once
 
+#define DERIVATIVE_GAIN 20
+#define PROPORTIONAL_GAIN 30
+
 //DIGITAL INPUTS
 #define TAPE_FOLLOWING_QRD_RIGHT  2
 #define TAPE_FOLLOWING_QRD_LEFT 1
@@ -63,7 +66,7 @@
 #define INTERSECTION_TURN_SPEED 150
 #define UTURN_SPEED 100
 #define PULLOVER_SPEED 100
-#define CLAW_SPEED 100
+#define CLAW_SPEED 150
 #define CONVEYOR_SPEED 100
 #define CONVEYOR_TIME_TICK 2000
 #define INTERSECTION_TURN_WAIT_TICK 5
@@ -73,6 +76,7 @@
 #define ARM_POSITION_TICK 500
 #define ARM_WAIT_TICK 500
 #define BACKUP_WAIT_TICK 1000
+#define SERVO_WAIT_TICK 1000
 
 #define LOST_TICK 1000
 
@@ -92,10 +96,10 @@ struct armPosition_t
 
 // Arm position
 armPosition_t reset = {90, 10, 150};
-armPosition_t rightPickUp = {0, 50, 80};
-armPosition_t leftPickUp = {180, 50, 80};
-armPosition_t rightDropOff = {80, 90, 80};
-armPosition_t leftDropOff = {100, 90, 80};
+armPosition_t rightPickUp = {0, 50, 50};
+armPosition_t leftPickUp = {180, 50, 50};
+armPosition_t rightDropOff = {80, 110, 80};
+armPosition_t leftDropOff = {100, 110, 80};
 
 enum clamp_e {
   CLOSE, OPEN

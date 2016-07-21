@@ -5,12 +5,15 @@
 */
 void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 {
+  delay(SERVO_WAIT_TICK);
   RCServo0.write(pickUp.baseRotationAngle);
-  RCServo1.write(pickUp.frontPositionAngle);
+  delay(SERVO_WAIT_TICK);
+  RCServo1.write(pickUp.backPositionAngle);
+  delay(SERVO_WAIT_TICK);
 
-  byte positionStep = pickUp.backPositionAngle >> 3;
+  byte positionStep = pickUp.frontPositionAngle >> 3;
 
-  while (positionStep < pickUp.backPositionAngle && digitalRead(DOLL_SWITCH) == PRESS_NO)
+  while (positionStep < pickUp.frontPositionAngle && digitalRead(DOLL_SWITCH) == PRESS_NO)
   {
     RCServo2.write(positionStep);
     positionStep += positionStep;
@@ -24,8 +27,10 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   delay(ARM_WAIT_TICK);
 
   RCServo0.write(dropOff.baseRotationAngle);
-  RCServo1.write(dropOff.frontPositionAngle);
-  RCServo2.write(dropOff.backPositionAngle);
+  delay(SERVO_WAIT_TICK);
+  RCServo1.write(dropOff.backPositionAngle);
+  delay(SERVO_WAIT_TICK);
+  RCServo2.write(dropOff.frontPositionAngle);
 
   delay(ARM_WAIT_TICK);
 
@@ -34,8 +39,11 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   delay(ARM_WAIT_TICK);
 
   RCServo0.write(reset.baseRotationAngle);
+  delay(SERVO_WAIT_TICK);
   RCServo1.write(reset.frontPositionAngle);
+  delay(SERVO_WAIT_TICK);
   RCServo2.write(reset.backPositionAngle);
+  delay(SERVO_WAIT_TICK);
 }
 
 /*

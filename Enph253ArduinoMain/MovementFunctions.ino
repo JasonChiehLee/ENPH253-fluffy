@@ -23,8 +23,8 @@ void tapeFollow()
   currentMotorSpeedLeft = TAPE_FOLLOWING_DEFAULT_SPEED;
 
   // @TODO: move these to # defines after calibrating?
-  int proportionalGain = knob(6) >> 2;
-  int derivativeGain = knob(7) >> 2;
+  int proportionalGain = PROPORTIONAL_GAIN; //knob(6) >> 2;
+  int derivativeGain = DERIVATIVE_GAIN; //knob(7) >> 2;
 
   int rightQRD = digitalRead(TAPE_FOLLOWING_QRD_RIGHT);
   int leftQRD = digitalRead(TAPE_FOLLOWING_QRD_LEFT);
