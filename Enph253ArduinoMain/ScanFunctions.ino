@@ -9,6 +9,7 @@ byte intersectionScan()
 
   byte bestAngle = 90;
 
+/*
   int one = analogRead(FRONT_QSD1);
   int two = analogRead(FRONT_QSD2);
   int three = analogRead(FRONT_QSD3);
@@ -35,6 +36,7 @@ byte intersectionScan()
   {
     bestAngle = FIVE_ANGLE;
   }
+  */
   
   setTravelAngle(bestAngle);
 }

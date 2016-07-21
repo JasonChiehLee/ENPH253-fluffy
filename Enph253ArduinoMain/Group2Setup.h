@@ -17,7 +17,7 @@
 #define ON 1
 #define OFF 0
 
-#define UNPRESS_YES 1
+#define PRESS_NO 1
 #define PRESS_YES 0
 
 //ANALOG INPUTS
@@ -36,7 +36,7 @@
 #define TWO_ANGLE 60
 #define THREE_ANGLE 90
 #define FOUR_ANGLE 120
-#define FIVE ANGLE 150
+#define FIVE_ANGLE 150
 
 //MOTOR OUTPUTS
 #define MOTOR_RIGHT_WHEEL 0

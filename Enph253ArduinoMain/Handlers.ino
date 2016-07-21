@@ -33,31 +33,40 @@ void intersectionHandler()
   direction_e nextDirection = FORWARD;
 
   nextDirection = determineDirection(rightTurn, leftTurn, straightThrough);
-  if (nextDirection == LEFT)
-  {
+  LCD.clear();
+  LCD.home();
+  LCD.print(leftTurn);
+  LCD.print(" ");
+  LCD.print(straightThrough);
+  LCD.print(" ");
+  LCD.print(rightTurn);
+
+  /*
+    if (nextDirection == LEFT)
+    {
     LCD.clear();
     LCD.home();
     LCD.print("LEFT");
-  }
-  else if (nextDirection == FORWARD)
-  {
+    }
+    else if (nextDirection == FORWARD)
+    {
     LCD.clear();
     LCD.home();
     LCD.print("FORWARD");
 
-  }
-  else if (nextDirection == RIGHT)
-  {
+    }
+    else if (nextDirection == RIGHT)
+    {
     LCD.clear();
     LCD.home();
     LCD.print("RIGHT");
-  }
-  else
-  {
+    }
+    else
+    {
     LCD.clear();
     LCD.home();
     LCD.print("KILL YOURSELF");
-  }
+    }*/
 
   // Move to that direction
   intersectionTurn(nextDirection);
@@ -73,6 +82,12 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
   direction_e travelDirection = FORWARD;
   if (travelAngle < THRESHOLDANGLE1)
   {
+    LCD.clear();
+    LCD.home();
+    LCD.print(" leftpref");
+    LCD.setCursor(0, 1);
+    LCD.print(travelAngle);
+    delay(3000);
     if (leftTurn == true)
     {
       travelDirection = LEFT;
@@ -92,6 +107,13 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
   }
   else if (travelAngle > THRESHOLDANGLE2)
   {
+    LCD.clear();
+    LCD.home();
+    LCD.print("rightpref");
+    LCD.setCursor(0, 1);
+    LCD.print(travelAngle);
+    delay(3000);
+
     if (rightTurn == true)
     {
       travelDirection = RIGHT;
@@ -111,6 +133,13 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
   }
   else if (travelAngle > THRESHOLDANGLE1 && travelAngle < THRESHOLDANGLE2)
   {
+    LCD.clear();
+    LCD.home();
+    LCD.print("straight pref");
+    LCD.setCursor(0, 1);
+    LCD.print(travelAngle);
+    delay(3000);
+
     if (straightThrough == true)
     {
       travelDirection = FORWARD;

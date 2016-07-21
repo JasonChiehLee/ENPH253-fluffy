@@ -214,15 +214,15 @@ void xPointTurn(int numPoints) {
   byte pivotMotor;
   if (previousTurn == RIGHT)
   {
-    direction_e firstTurn = RIGHT;
-    powerMotor = MOTOR_LEFT_WHEEL;
-    pivotMotor = MOTOR_RIGHT_WHEEL;
-  }
-  else
-  {
     direction_e firstTurn = LEFT;
     powerMotor = MOTOR_RIGHT_WHEEL;
     pivotMotor = MOTOR_LEFT_WHEEL;
+  }
+  else
+  {
+    direction_e firstTurn = RIGHT;
+    powerMotor = MOTOR_LEFT_WHEEL;
+    pivotMotor = MOTOR_RIGHT_WHEEL;
   }
 
   if (numPoints == 3)
@@ -257,6 +257,10 @@ void xPointTurn(int numPoints) {
     while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
+      if (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON)
+      {
+        return;
+      }
     }
 
     motor.speed(powerMotor, UTURN_SPEED >> 1);
