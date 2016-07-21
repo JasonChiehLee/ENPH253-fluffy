@@ -71,22 +71,22 @@ void tapeFollow()
   {
     LCD.clear();
     LCD.setCursor(0, 0);
-    LCD.print(rightQRD);
+    LCD.print(analogRead(FRONT_QSD1));
 
     LCD.setCursor(5, 0);
-    LCD.print(leftQRD);
+    LCD.print(analogRead(FRONT_QSD2));
 
     LCD.setCursor(10, 0);
-    LCD.print(proportionalGain);
+    LCD.print(analogRead(FRONT_QSD3));
 
     LCD.setCursor(0, 1);
-    LCD.print(derivativeGain);
+    LCD.print(analogRead(FRONT_QSD4));
 
     LCD.setCursor(5, 1);
-    LCD.print(currentMotorSpeedLeft);
+    LCD.print(analogRead(FRONT_QSD5));
 
     LCD.setCursor(10, 1);
-    LCD.print(currentMotorSpeedRight);
+    LCD.print(" ");
 
     tapeFollowing_loopCount = 0;
   }
@@ -121,6 +121,7 @@ void hardStop() {
 void intersectionTurn(direction_e turnDirection) {
   if (turnDirection == LEFT)
   {
+    LCD.print(" turn left");
     motor.speed(MOTOR_RIGHT_WHEEL, INTERSECTION_TURN_SPEED);
     motor.stop(MOTOR_LEFT_WHEEL);
     // wait until both QRDs are off
@@ -141,6 +142,7 @@ void intersectionTurn(direction_e turnDirection) {
   }
   else if (turnDirection == RIGHT)
   {
+    LCD.print(" turn right");
     motor.stop(MOTOR_RIGHT_WHEEL);
     motor.speed(MOTOR_LEFT_WHEEL, INTERSECTION_TURN_SPEED);
     // wait until both QRDs are off
@@ -161,6 +163,7 @@ void intersectionTurn(direction_e turnDirection) {
   }
   else // FORWARD
   {
+    LCD.print(" forward");
     motor.speed(MOTOR_RIGHT_WHEEL, currentMotorSpeedRight);
     motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeedLeft);
   }

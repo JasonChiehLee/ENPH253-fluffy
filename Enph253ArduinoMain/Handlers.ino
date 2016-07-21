@@ -32,7 +32,6 @@ void intersectionHandler()
   // Temporarily prioritizing left-straight-right until sensors are online
   direction_e nextDirection = FORWARD;
 
-  nextDirection = determineDirection(rightTurn, leftTurn, straightThrough);
   LCD.clear();
   LCD.home();
   LCD.print(leftTurn);
@@ -41,6 +40,8 @@ void intersectionHandler()
   LCD.print(" ");
   LCD.print(rightTurn);
 
+  nextDirection = determineDirection(rightTurn, leftTurn, straightThrough);
+  
   /*
     if (nextDirection == LEFT)
     {
@@ -84,7 +85,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
   {
     LCD.clear();
     LCD.home();
-    LCD.print(" leftpref");
+    LCD.print("leftpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
     delay(3000);
@@ -92,7 +93,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     {
       travelDirection = LEFT;
     }
-    else if (straightThrough = true)
+    else if (straightThrough == true)
     {
       travelDirection = FORWARD;
     }
@@ -102,6 +103,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     }
     else
     {
+      delay(5000);
       xPointTurn(5);
     }
   }
@@ -118,7 +120,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     {
       travelDirection = RIGHT;
     }
-    else if (straightThrough = true)
+    else if (straightThrough == true)
     {
       travelDirection = FORWARD;
     }
@@ -128,6 +130,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     }
     else
     {
+      delay(5000);
       xPointTurn(5);
     }
   }
@@ -135,7 +138,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
   {
     LCD.clear();
     LCD.home();
-    LCD.print("straight pref");
+    LCD.print("straightpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
     delay(3000);
@@ -144,9 +147,10 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     {
       travelDirection = FORWARD;
     }
-    else if (rightTurn = true)
+    else if (rightTurn == true)
     {
       travelDirection = RIGHT;
+      LCD.print("KILL YOURSELF");
     }
     else if (leftTurn == true)
     {
@@ -154,6 +158,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     }
     else
     {
+      delay(5000);
       xPointTurn(5);
     }
   }
