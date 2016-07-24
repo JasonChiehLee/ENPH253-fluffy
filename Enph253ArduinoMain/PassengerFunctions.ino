@@ -3,6 +3,7 @@
 
    Moves arm to location for pickup and waits for clawCommand to grab passenger. Moves aquired passenger to dropOff on conveyor belt.
 */
+#include <LiquidCrystal.h>
 void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 {
   delay(SERVO_WAIT_TICK);
@@ -13,11 +14,14 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
   byte positionStep = pickUp.frontPositionAngle >> 3;
 
-  while (positionStep < pickUp.frontPositionAngle && digitalRead(DOLL_SWITCH) == PRESS_NO)
+  while (digitalRead(DOLL_SWITCH) == PRESS_NO)
   {
+    if (positionStep < pickUp.frontPositionAngle)
+    {
     RCServo2.write(positionStep);
     positionStep += positionStep;
     delay(ARM_POSITION_TICK);
+    }
   }
 
   delay(ARM_WAIT_TICK);
@@ -59,21 +63,29 @@ void clawCommand(clamp_e command)
   {
     // close claw
     motor.speed(MOTOR_CLAW, CLAW_SPEED);
+    delay(CLAW_WAIT_TICK);
     while (digitalRead(CLAW_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
       setClawClampTick(clawClampTick + 1);
+      LCD.clear();
+      LCD.print(clawClampTick);
     }
   }
   else
   {
     // open claw
     motor.speed(MOTOR_CLAW, -CLAW_SPEED);
-    while (clawClampTick != 0)
+    delay(150);
+   /* while (clawClampTick > 0)
     {
-      delay(MOTOR_WRITE_WAIT_TICK);
       setClawClampTick(clawClampTick - 1);
-    }
+      LCD.clear();
+      LCD.print(clawClampTick);
+    }*/
+    
+    motor.stop(MOTOR_CLAW);
+    delay(CLAW_WAIT_TICK);
   }
 }
 
