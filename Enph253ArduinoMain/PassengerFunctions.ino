@@ -26,11 +26,13 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 
   delay(ARM_WAIT_TICK);
 
-  RCServo0.write(dropOff.baseRotationAngle);
+
+  RCServo2.write(dropOff.frontPositionAngle);
   delay(SERVO_WAIT_TICK);
   RCServo1.write(dropOff.backPositionAngle);
   delay(SERVO_WAIT_TICK);
-  RCServo2.write(dropOff.frontPositionAngle);
+  RCServo0.write(dropOff.baseRotationAngle);
+  delay(SERVO_WAIT_TICK);
 
   delay(ARM_WAIT_TICK);
 

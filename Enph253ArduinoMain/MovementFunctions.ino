@@ -86,7 +86,9 @@ void tapeFollow()
     LCD.print(analogRead(FRONT_QSD5));
 
     LCD.setCursor(10, 1);
+    LCD.print(analogRead(SIDE_QSD_LEFT));
     LCD.print(" ");
+    LCD.print(analogRead(SIDE_QSD_RIGHT));
 
     tapeFollowing_loopCount = 0;
   }
@@ -167,6 +169,7 @@ void intersectionTurn(direction_e turnDirection) {
     motor.speed(MOTOR_RIGHT_WHEEL, currentMotorSpeedRight);
     motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeedLeft);
   }
+  setTravelAngle(90);
 }
 
 /*
@@ -213,6 +216,9 @@ void pullOver(direction_e pulloverDirection) {
    Performs (3 or 5) point turn depending on whether a cliff is present!
 */
 void xPointTurn(int numPoints) {
+  LCD.clear();
+  LCD.home();
+  LCD.print("xPonitTurn");
   byte powerMotor;
   byte pivotMotor;
   if (previousTurn == RIGHT)
@@ -255,24 +261,34 @@ void xPointTurn(int numPoints) {
   else
     //Five-point turn
   {
+    LCD.clear();
+    LCD.home();
+    LCD.print("5Point - Stage 1");
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED >> 1);
+    delay(INTERSECTION_TURN_IGNORE_TIME);
     while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
-      if (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON)
+      if (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON || digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON)
       {
         return;
       }
     }
 
+    LCD.clear();
+    LCD.home();
+    LCD.print("5Point - Stage 2");
     motor.speed(powerMotor, UTURN_SPEED >> 1);
     motor.speed(pivotMotor, -UTURN_SPEED);
     while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
-
+    
+    LCD.clear();
+    LCD.home();
+    LCD.print("5Point - Stage 3");
     motor.speed(powerMotor, UTURN_SPEED);
     motor.speed(pivotMotor, -UTURN_SPEED / 2);
     while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)

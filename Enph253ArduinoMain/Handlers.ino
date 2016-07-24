@@ -83,12 +83,10 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
   direction_e travelDirection = FORWARD;
   if (travelAngle < THRESHOLDANGLE1)
   {
-    LCD.clear();
-    LCD.home();
-    LCD.print("leftpref");
+    LCD.print(" leftpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
-    delay(3000);
+    delay(2000);
     if (leftTurn == true)
     {
       travelDirection = LEFT;
@@ -109,12 +107,10 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
   }
   else if (travelAngle > THRESHOLDANGLE2)
   {
-    LCD.clear();
-    LCD.home();
-    LCD.print("rightpref");
+    LCD.print(" rightpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
-    delay(3000);
+    delay(2000);
 
     if (rightTurn == true)
     {
@@ -136,12 +132,10 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
   }
   else if (travelAngle > THRESHOLDANGLE1 && travelAngle < THRESHOLDANGLE2)
   {
-    LCD.clear();
-    LCD.home();
-    LCD.print("straightpref");
+    LCD.print(" straightpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
-    delay(3000);
+    delay(2000);
 
     if (straightThrough == true)
     {
@@ -172,7 +166,13 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
 */
 void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropOff)
 {
-  centreAlign(dollSide);
-  passengerAquire(pickUp, dropOff);
-  setLoadStatus(TRUE);
+  LCD.clear();
+  LCD.home();
+  LCD.print("DOLL");
+  hardStop();
+  delay(3000);
+  //centreAlign(dollSide);
+  //passengerAquire(pickUp, dropOff);
+  //setLoadStatus(TRUE);
+  setTravelAngle(90);
 }

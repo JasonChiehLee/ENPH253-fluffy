@@ -8,6 +8,7 @@ byte intersectionScan()
 {
 
   byte bestAngle = 90;
+  boolean scanSuccess = false;
 
   int one = analogRead(FRONT_QSD1);
   int two = analogRead(FRONT_QSD2);
@@ -17,26 +18,34 @@ byte intersectionScan()
 
   if (one > two && one > three && one > four && one > five && one > QSD_FRONT_THRESHOLD)
   {
+    scanSuccess = true;
     bestAngle = ONE_ANGLE;
   }
   else if (two > one && two > three && two > four && two > five && two > QSD_FRONT_THRESHOLD)
   {
+    scanSuccess = true;
     bestAngle = TWO_ANGLE;
   }
   else if (three > one && three > two && three > four && three > five && three > QSD_FRONT_THRESHOLD)
   {
+    scanSuccess = true;
     bestAngle = THREE_ANGLE;
   }
   else if (four > one && four > two && four > three && four > five && four > QSD_FRONT_THRESHOLD)
   {
+    scanSuccess = true;
     bestAngle = FOUR_ANGLE;
   }
   else if (five > one && five > two && five > three && five > four && five > QSD_FRONT_THRESHOLD)
   {
+    scanSuccess = true;
     bestAngle = FIVE_ANGLE;
   }
-  
-  setTravelAngle(bestAngle);
+
+  if (scanSuccess)
+  {
+    setTravelAngle(bestAngle);
+  }
 }
 
 /*
