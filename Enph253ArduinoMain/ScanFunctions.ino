@@ -76,3 +76,19 @@ void dropOffScan()
   setTravelAngle(varAngle);
 }
 
+/*
+ * function - analogReadAvg
+ */
+
+ int analogReadAvg(byte port)
+ {
+  int retval = 0;
+
+  for (int i = 0; i < 16; i++)
+  {
+    retval += analogRead(port);
+  }
+
+  return retval >> 4;
+ }
+

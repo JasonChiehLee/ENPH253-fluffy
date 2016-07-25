@@ -319,35 +319,43 @@ void xPointTurn(int numPoints) {
 /*
    function - centreAlign
 
-   Centres robot adjacent to doll!
+   Centres robot adjacent to doll, using the side sensor corresponding to the pickUp direction variable
 */
 void centreAlign (direction_e pickUp)
 {
-    byte signalSensor;
-    
-    // check which sensor to use, based on input direction
-    if (pickUp == RIGHT)
-    {
-        signalSensor = SIDE_QSD_RIGHT;
-    }
-    else
-    {
-        signalSensor = SIDE_QSD_LEFT;
-    }
-    
-    int currentSignal = analogRead(signalSensor);
-    
-    // forward until we reach a max
-    while (analogRead(signalSensor) >= currentSignal)
-    {
-        motor.speed(MOTOR_RIGHT_WHEEL, CENTRE_SPEED);
-        motor.speed(MOTOR_LEFT_WHEEL, CENTRE_SPEED);
-        delay(MOTOR_WRITE_WAIT_TICK);
-    }
-    motor.stop(MOTOR_RIGHT_WHEEL);
-    motor.stop(MOTOR_LEFT_WHEEL);
-    
-    // @TODO do we need a backing up section?
-    
+  LCD.clear();
+  LCD.home();
+  LCD.print("Aligning");
+  byte signalSensor;
+
+  // check which sensor to use, based on input direction
+  if (pickUp == RIGHT)
+  {
+    signalSensor = SIDE_QSD_RIGHT;
+  }
+  else
+  {
+    signalSensor = SIDE_QSD_LEFT;
+  }
+
+  // forward until we reach a max
+  int lastSignal = analogReadAvg(signalSensor);
+  motor.speed(MOTOR_RIGHT_WHEEL, CENTRE_SPEED);
+  motor.speed(MOTOR_LEFT_WHEEL, CENTRE_SPEED);
+  int currentSignal = analogReadAvg(signalSensor);
+  while (currentSignal >= lastSignal - 2)
+  {
+    delay(MOTOR_WRITE_WAIT_TICK);
+    Serial.println(currentSignal);
+    lastSignal = currentSignal;
+    currentSignal = analogReadAvg(signalSensor);
+  }
+  motor.stop(MOTOR_RIGHT_WHEEL);
+  motor.stop(MOTOR_LEFT_WHEEL);
+
+  delay(3000);
+
+  // @TODO do we need a backing up section?
+
 }
 

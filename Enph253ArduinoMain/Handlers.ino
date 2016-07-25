@@ -41,7 +41,7 @@ void intersectionHandler()
   LCD.print(rightTurn);
 
   nextDirection = determineDirection(rightTurn, leftTurn, straightThrough);
-  
+
   /*
     if (nextDirection == LEFT)
     {
@@ -166,12 +166,12 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
 */
 void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropOff)
 {
+  hardStop();
+  centreAlign(dollSide);
   LCD.clear();
   LCD.home();
   LCD.print("DOLL");
-  hardStop();
   delay(3000);
-  //centreAlign(dollSide);
   //passengerAquire(pickUp, dropOff);
   //setLoadStatus(TRUE);
   setTravelAngle(90);
