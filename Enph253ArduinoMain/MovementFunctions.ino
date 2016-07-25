@@ -258,6 +258,10 @@ void xPointTurn(int numPoints) {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
   }
+  else if (numPoints == 2)
+  {
+
+  }
   else
     //Five-point turn
   {
@@ -285,7 +289,7 @@ void xPointTurn(int numPoints) {
     {
       delay(MOTOR_WRITE_WAIT_TICK);
     }
-    
+
     LCD.clear();
     LCD.home();
     LCD.print("5Point - Stage 3");
@@ -317,30 +321,33 @@ void xPointTurn(int numPoints) {
 
    Centres robot adjacent to doll!
 */
-void centreAlign(direction_e pickUp)
+void centreAlign (direction_e pickUp)
 {
-  int currentRead = 0;
-  if (pickUp == RIGHT)
-  {
-    currentRead = analogRead(SIDE_QSD_RIGHT);
-    while (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
+    byte signalSensor;
+    
+    // check which sensor to use, based on input direction
+    if (pickUp == RIGHT)
     {
-      delay(MOTOR_WRITE_WAIT_TICK);
-      currentRead = analogRead(SIDE_QSD_RIGHT);
+        signalSensor = SIDE_QSD_RIGHT;
+    }
+    else
+    {
+        signalSensor = SIDE_QSD_LEFT;
+    }
+    
+    int currentSignal = analogRead(signalSensor);
+    
+    // forward until we reach a max
+    while (analogRead(signalSensor) >= currentSignal)
+    {
+        motor.speed(MOTOR_RIGHT_WHEEL, CENTRE_SPEED);
+        motor.speed(MOTOR_LEFT_WHEEL, CENTRE_SPEED);
+        delay(MOTOR_WRITE_WAIT_TICK);
     }
     motor.stop(MOTOR_RIGHT_WHEEL);
     motor.stop(MOTOR_LEFT_WHEEL);
-  }
-  else
-  {
-    currentRead = analogRead(SIDE_QSD_LEFT);
-    while (analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
-    {
-      delay(MOTOR_WRITE_WAIT_TICK);
-      currentRead = analogRead(SIDE_QSD_LEFT);
-    }
-    motor.stop(MOTOR_RIGHT_WHEEL);
-    motor.stop(MOTOR_LEFT_WHEEL);
-  }
+    
+    // @TODO do we need a backing up section?
+    
 }
 

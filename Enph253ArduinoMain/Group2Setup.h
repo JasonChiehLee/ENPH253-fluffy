@@ -79,6 +79,7 @@
 #define ARM_WAIT_TICK 500
 #define BACKUP_WAIT_TICK 1000
 #define SERVO_WAIT_TICK 500
+#define CENTRE_SPEED 60
 
 #define LOST_TICK 1000
 
