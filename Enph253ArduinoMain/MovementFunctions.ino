@@ -126,13 +126,7 @@ void intersectionTurn(direction_e turnDirection) {
     LCD.print(" turn left");
     motor.speed(MOTOR_RIGHT_WHEEL, INTERSECTION_TURN_SPEED);
     motor.stop(MOTOR_LEFT_WHEEL);
-    // wait until both QRDs are off
-    /*
-      while ((analogRead(TAPE_FOLLOWING_QRD_LEFT) > TAPE_FOLLOWING_TRESHOLD) || (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > TAPE_FOLLOWING_TRESHOLD))
-      {
-      delay(INTERSECTION_TURN_WAIT_TICK);
-      }
-    */
+    // wait until both QRDs are off - excellent hard coding
     delay(INTERSECTION_TURN_TIME);
     // wait until at least one QRD is on again
     while ((digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF) && (digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF))
@@ -147,13 +141,7 @@ void intersectionTurn(direction_e turnDirection) {
     LCD.print(" turn right");
     motor.stop(MOTOR_RIGHT_WHEEL);
     motor.speed(MOTOR_LEFT_WHEEL, INTERSECTION_TURN_SPEED);
-    // wait until both QRDs are off
-    /*
-      while ((analogRead(TAPE_FOLLOWING_QRD_LEFT) > TAPE_FOLLOWING_TRESHOLD) || (analogRead(TAPE_FOLLOWING_QRD_RIGHT) > TAPE_FOLLOWING_TRESHOLD))
-      {
-      delay(INTERSECTION_TURN_WAIT_TICK);
-      }
-    */
+    // wait until both QRDs are off - excellent ard coding
     delay(INTERSECTION_TURN_TIME);
     // wait until both QRDs are on again
     while (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF)
@@ -213,12 +201,9 @@ void pullOver(direction_e pulloverDirection) {
 /*
    function - xPointTurn
 
-   Performs (3 or 5) point turn depending on whether a cliff is present!
+   Turns the robot around, making a 1 or 2 point turn depending on the situation
 */
-void xPointTurn(int numPoints) {
-  LCD.clear();
-  LCD.home();
-  LCD.print("xPonitTurn");
+void xPointTurn() {
   byte powerMotor;
   byte pivotMotor;
   if (previousTurn == RIGHT)
@@ -236,116 +221,39 @@ void xPointTurn(int numPoints) {
     previousTurn = RIGHT;
   }
 
-  if (numPoints == 3)
-    //Three-point turn
+
+
+  //Back-up, until back bumper is hit
+  LCD.clear();
+  LCD.home();
+  LCD.print("Backing up");
+  motor.speed(powerMotor, UTURN_SPEED >> 1);
+  motor.speed(pivotMotor, -UTURN_SPEED);
+
+  delay(UTURN_TAPE_IGNORE_TIME);
+  while (!(digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_YES || digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_YES))
   {
-    motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)
+    if (digitalRead(TAPE_FOLLOWING_QRD_LEFT) || digitalRead(TAPE_FOLLOWING_QRD_RIGHT))
     {
-      delay(MOTOR_WRITE_WAIT_TICK);
+      return;
     }
-
-    motor.speed(powerMotor, UTURN_SPEED >> 1);
-    motor.speed(pivotMotor, -UTURN_SPEED);
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_NO)
+    if (digitalRead(FRONT_LEFT_BUMPER_SWITCH) == PRESS_YES || digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES)
     {
-      delay(MOTOR_WRITE_WAIT_TICK);
+      LCD.print("Full reverse");
+      motor.speed(powerMotor, -UTURN_SPEED);
+      motor.speed(pivotMotor, -UTURN_SPEED);
     }
-
-    motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF)
-    {
-      delay(MOTOR_WRITE_WAIT_TICK);
-    }
+    delay(MOTOR_WRITE_WAIT_TICK);
   }
-  else if (numPoints == 2)
+
+  LCD.clear();
+  LCD.home();
+  LCD.print("Forward");
+  motor.speed(powerMotor, UTURN_SPEED);
+  motor.speed(pivotMotor, -UTURN_SPEED >> 1);
+  while (!(digitalRead(TAPE_FOLLOWING_QRD_LEFT) || digitalRead(TAPE_FOLLOWING_QRD_RIGHT)))
   {
-    //Back-up, until back bumper is hit
-    LCD.clear();
-    LCD.home();
-    LCD.print("Backing up");
-    motor.speed(powerMotor, UTURN_SPEED >> 1);
-    motor.speed(pivotMotor, -UTURN_SPEED);
-
-    delay(UTURN_TAPE_IGNORE_TIME);
-    while (!(digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_YES || digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_YES))
-    {
-      if (digitalRead(TAPE_FOLLOWING_QRD_LEFT) || digitalRead(TAPE_FOLLOWING_QRD_RIGHT))
-      {
-        return;
-      }
-      if (digitalRead(FRONT_LEFT_BUMPER_SWITCH) == PRESS_YES || digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES)
-      {
-        LCD.print("Full reverse");
-        motor.speed(powerMotor, -UTURN_SPEED);
-        motor.speed(pivotMotor, -UTURN_SPEED);
-      }
-      delay(MOTOR_WRITE_WAIT_TICK);
-    }
-
-    LCD.clear();
-    LCD.home();
-    LCD.print("Forward");
-    motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (!(digitalRead(TAPE_FOLLOWING_QRD_LEFT) || digitalRead(TAPE_FOLLOWING_QRD_RIGHT)))
-    {
-      delay(MOTOR_WRITE_WAIT_TICK);
-    }
-  }
-  else
-    //Five-point turn
-  {
-    LCD.clear();
-    LCD.home();
-    LCD.print("5Point - Stage 1");
-    motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED >> 2);
-    delay(INTERSECTION_TURN_IGNORE_TIME);
-    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)
-    {
-      delay(MOTOR_WRITE_WAIT_TICK);
-      if (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON || digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON)
-      {
-        return;
-      }
-    }
-
-    LCD.clear();
-    LCD.home();
-    LCD.print("5Point - Stage 2");
-    motor.speed(powerMotor, UTURN_SPEED >> 1);
-    motor.speed(pivotMotor, -UTURN_SPEED);
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_NO)
-    {
-      delay(MOTOR_WRITE_WAIT_TICK);
-    }
-
-    LCD.clear();
-    LCD.home();
-    LCD.print("5Point - Stage 3");
-    motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED / 2);
-    while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)
-    {
-      delay(MOTOR_WRITE_WAIT_TICK);
-    }
-
-    motor.speed(powerMotor, UTURN_SPEED >> 1);
-    motor.speed(pivotMotor, -UTURN_SPEED);
-    while (digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_NO)
-    {
-      delay(MOTOR_WRITE_WAIT_TICK);
-    }
-
-    motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
-    while (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF)
-    {
-      delay(MOTOR_WRITE_WAIT_TICK);
-    }
+    delay(MOTOR_WRITE_WAIT_TICK);
   }
 }
 

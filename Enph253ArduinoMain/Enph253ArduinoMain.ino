@@ -20,6 +20,7 @@ void setup()
   //Setup
 #include <phys253setup.txt>
   Serial.begin(9600);
+  bool go = false;
 }
 
 void loop()
@@ -42,6 +43,7 @@ LCD.print(" ");
 LCD.print(digitalRead(BACK_RIGHT_BUMPER_SWITCH));
 delay(100);
 #else
+  
   tapeFollow();
 #endif
 }

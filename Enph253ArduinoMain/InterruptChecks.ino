@@ -50,11 +50,8 @@ void processInterrupts()
   {
     motor.stop(MOTOR_RIGHT_WHEEL);
     motor.stop(MOTOR_LEFT_WHEEL);
-    //delay(BACKUP_WAIT_TICK);
-    //motor.speed(MOTOR_RIGHT_WHEEL, -UTURN_SPEED);
-    //motor.speed(MOTOR_LEFT_WHEEL, -UTURN_SPEED);
-    delay(BACKUP_WAIT_TICK);
-    xPointTurn(2);
+    delay(BACKUP_WAIT_TIME);
+    xPointTurn();
   }
 
   // check for intersection

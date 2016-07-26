@@ -102,7 +102,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     else
     {
       delay(5000);
-      xPointTurn(5);
+      xPointTurn();
     }
   }
   else if (travelAngle > THRESHOLDANGLE2)
@@ -127,7 +127,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     else
     {
       delay(5000);
-      xPointTurn(5);
+      xPointTurn();
     }
   }
   else if (travelAngle > THRESHOLDANGLE1 && travelAngle < THRESHOLDANGLE2)
@@ -144,7 +144,6 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     else if (rightTurn == true)
     {
       travelDirection = RIGHT;
-      LCD.print("KILL YOURSELF");
     }
     else if (leftTurn == true)
     {
@@ -153,7 +152,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     else
     {
       delay(5000);
-      xPointTurn(5);
+      xPointTurn();
     }
   }
   return travelDirection;
