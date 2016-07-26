@@ -276,6 +276,11 @@ void xPointTurn(int numPoints) {
       {
         return;
       }
+      if (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES || digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES)
+      {
+        motor.speed(powerMotor, -UTURN_SPEED);
+        motor.speed(pivotMotor, -UTURN_SPEED);
+      }
       delay(MOTOR_WRITE_WAIT_TICK);
     }
 
