@@ -64,12 +64,9 @@ void clawCommand(clamp_e command)
     // close claw
     motor.speed(MOTOR_CLAW, CLAW_SPEED);
     delay(CLAW_WAIT_TICK);
-    while (digitalRead(CLAW_SWITCH) == PRESS_NO)
+    while (digitalRead(CLAW_CLOSE_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
-      setClawClampTick(clawClampTick + 1);
-      LCD.clear();
-      LCD.print(clawClampTick);
     }
   }
   else
@@ -77,13 +74,10 @@ void clawCommand(clamp_e command)
     // open claw
     motor.speed(MOTOR_CLAW, -CLAW_SPEED);
     delay(150);
-   /* while (clawClampTick > 0)
+    while(digitalRead(CLAW_OPEN_SWITCH) == PRESS_NO)
     {
-      setClawClampTick(clawClampTick - 1);
-      LCD.clear();
-      LCD.print(clawClampTick);
-    }*/
-    
+      delay(MOTOR_WRITE_WAIT_TICK);
+    }
     motor.stop(MOTOR_CLAW);
     delay(CLAW_WAIT_TICK);
   }
