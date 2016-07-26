@@ -266,12 +266,16 @@ void xPointTurn(int numPoints) {
     LCD.clear();
     LCD.home();
     LCD.print("Backing up");
-    motor.speed(powerMotor, UTURN_SPEED >> 2);
+    motor.speed(powerMotor, UTURN_SPEED >> 1);
     motor.speed(pivotMotor, -UTURN_SPEED);
 
     delay(UTURN_TAPE_IGNORE_TIME);
     while (!(digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_YES || digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_YES))
     {
+      if (digitalRead(TAPE_FOLLOWING_QRD_LEFT) || digitalRead(TAPE_FOLLOWING_QRD_RIGHT))
+      {
+        return;
+      }
       delay(MOTOR_WRITE_WAIT_TICK);
     }
 
@@ -279,7 +283,7 @@ void xPointTurn(int numPoints) {
     LCD.home();
     LCD.print("Forward");
     motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED >> 2);
+    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
     while (!(digitalRead(TAPE_FOLLOWING_QRD_LEFT) || digitalRead(TAPE_FOLLOWING_QRD_RIGHT)))
     {
       delay(MOTOR_WRITE_WAIT_TICK);
