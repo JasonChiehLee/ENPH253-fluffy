@@ -64,7 +64,7 @@ void clawCommand(clamp_e command)
     // close claw
     motor.speed(MOTOR_CLAW, CLAW_SPEED);
     delay(CLAW_WAIT_TICK);
-    while (digitalRead(CLAW_SWITCH) == PRESS_NO)
+    while (digitalRead(CLAW_CLOSE_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TICK);
       setClawClampTick(clawClampTick + 1);
