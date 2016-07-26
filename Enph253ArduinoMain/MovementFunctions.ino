@@ -276,8 +276,9 @@ void xPointTurn(int numPoints) {
       {
         return;
       }
-      if (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES || digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES)
+      if (digitalRead(FRONT_LEFT_BUMPER_SWITCH) == PRESS_YES || digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES)
       {
+        LCD.print("Full reverse");
         motor.speed(powerMotor, -UTURN_SPEED);
         motor.speed(pivotMotor, -UTURN_SPEED);
       }

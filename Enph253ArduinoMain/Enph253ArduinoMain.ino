@@ -13,6 +13,8 @@
 #include <LiquidCrystal.h>
 #include "Group2Setup.h"
 
+# define DEBUG 0
+
 void setup()
 {
   //Setup
@@ -23,12 +25,23 @@ void setup()
 void loop()
 {
   //Main code, repeated
-  //LCD.clear();
-  //LCD.home();
+#if DEBUG
+LCD.home();
+LCD.clear();
 
-  //passengerAquire(rightPickUp, rightDropOff);
-  //delay(1000000);
- 
+LCD.print(digitalRead(FRONT_LEFT_BUMPER_SWITCH));
+LCD.print(" ");
+LCD.print(digitalRead(FRONT_RIGHT_BUMPER_SWITCH));
+LCD.print(" ");
+LCD.print(digitalRead(FRONT_LEFT_GROUND_SWITCH));
+LCD.print(" ");
+LCD.print(digitalRead(FRONT_RIGHT_GROUND_SWITCH));
+LCD.print(" ");
+LCD.print(digitalRead(BACK_LEFT_BUMPER_SWITCH));
+LCD.print(" ");
+LCD.print(digitalRead(BACK_RIGHT_BUMPER_SWITCH));
+delay(100);
+#else
   tapeFollow();
- 
+#endif
 }
