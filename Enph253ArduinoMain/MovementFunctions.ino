@@ -226,12 +226,14 @@ void xPointTurn(int numPoints) {
     direction_e firstTurn = LEFT;
     powerMotor = MOTOR_RIGHT_WHEEL;
     pivotMotor = MOTOR_LEFT_WHEEL;
+    previousTurn = LEFT;
   }
   else
   {
     direction_e firstTurn = RIGHT;
     powerMotor = MOTOR_LEFT_WHEEL;
     pivotMotor = MOTOR_RIGHT_WHEEL;
+    previousTurn = RIGHT;
   }
 
   if (numPoints == 3)
@@ -260,7 +262,28 @@ void xPointTurn(int numPoints) {
   }
   else if (numPoints == 2)
   {
+    //Back-up, until back bumper is hit
+    LCD.clear();
+    LCD.home();
+    LCD.print("Backing up");
+    motor.speed(powerMotor, UTURN_SPEED >> 2);
+    motor.speed(pivotMotor, -UTURN_SPEED);
 
+    delay(UTURN_TAPE_IGNORE_TIME);
+    while (!(digitalRead(BACK_LEFT_BUMPER_SWITCH) == PRESS_YES || digitalRead(BACK_RIGHT_BUMPER_SWITCH) == PRESS_YES))
+    {
+      delay(MOTOR_WRITE_WAIT_TICK);
+    }
+
+    LCD.clear();
+    LCD.home();
+    LCD.print("Forward");
+    motor.speed(powerMotor, UTURN_SPEED);
+    motor.speed(pivotMotor, -UTURN_SPEED >> 2);
+    while (!(digitalRead(TAPE_FOLLOWING_QRD_LEFT) || digitalRead(TAPE_FOLLOWING_QRD_RIGHT)))
+    {
+      delay(MOTOR_WRITE_WAIT_TICK);
+    }
   }
   else
     //Five-point turn
@@ -269,7 +292,7 @@ void xPointTurn(int numPoints) {
     LCD.home();
     LCD.print("5Point - Stage 1");
     motor.speed(powerMotor, UTURN_SPEED);
-    motor.speed(pivotMotor, -UTURN_SPEED >> 1);
+    motor.speed(pivotMotor, -UTURN_SPEED >> 2);
     delay(INTERSECTION_TURN_IGNORE_TIME);
     while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO && digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_NO)
     {

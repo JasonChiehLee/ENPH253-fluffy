@@ -30,14 +30,14 @@ void processInterrupts()
     }
 
     // check for adjacent dolls
-    if (analogRead(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
+    if (analogReadAvg(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
     {
       LCD.clear();
       LCD.home();
       LCD.print("DOLL AQUISITION");
       dollHandler(RIGHT, rightPickUp, dropOff);
     }
-    else if (analogRead(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
+    else if (analogReadAvg(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
     {
       LCD.clear();
       LCD.home();
@@ -46,15 +46,15 @@ void processInterrupts()
     }
   }
   // for collisions
-  if (0)//digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES || digitalRead(FRONT_LEFT_BUMPER_SWITCH) == PRESS_YES)
+  if (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES || digitalRead(FRONT_LEFT_BUMPER_SWITCH) == PRESS_YES)
   {
     motor.stop(MOTOR_RIGHT_WHEEL);
     motor.stop(MOTOR_LEFT_WHEEL);
+    //delay(BACKUP_WAIT_TICK);
+    //motor.speed(MOTOR_RIGHT_WHEEL, -UTURN_SPEED);
+    //motor.speed(MOTOR_LEFT_WHEEL, -UTURN_SPEED);
     delay(BACKUP_WAIT_TICK);
-    motor.speed(MOTOR_RIGHT_WHEEL, -UTURN_SPEED);
-    motor.speed(MOTOR_LEFT_WHEEL, -UTURN_SPEED);
-    delay(BACKUP_WAIT_TICK);
-    xPointTurn(5);
+    xPointTurn(2);
   }
 
   // check for intersection
