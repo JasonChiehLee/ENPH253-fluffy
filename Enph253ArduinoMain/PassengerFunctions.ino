@@ -6,50 +6,83 @@
 #include <LiquidCrystal.h>
 void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
 {
-  delay(SERVO_WAIT_TICK);
-  RCServo0.write(pickUp.baseRotationAngle);
-  delay(SERVO_WAIT_TICK);
-  RCServo1.write(pickUp.backPositionAngle);
-  delay(SERVO_WAIT_TICK);
+  LCD.clear();
+  LCD.home();
+  LCD.print("Passenger Acquire");
+  
+  // set movement position (NOTE ORDER)
+  delay(SERVO_WAIT_TIME);
+  RCServo2.write(movingPosition.frontPositionAngle);
+  RCServo1.write(movingPosition.backPositionAngle);
 
+  // move to pickup position (NOTE ORDER)
+  delay(SERVO_WAIT_TIME);
+  RCServo0.write(pickUp.baseRotationAngle);
+  delay(SERVO_WAIT_TIME);
+  RCServo1.write(pickUp.backPositionAngle);
+  RCServo2.write(pickUp.frontPositionAngle);
+  delay(SERVO_WAIT_TIME);
+
+  // extend front until doll detection
   byte positionStep = pickUp.frontPositionAngle >> 3;
+  byte frontPosition = pickUpInit.frontPositionAngle;
 
   while (digitalRead(DOLL_SWITCH) == PRESS_NO)
   {
-    if (positionStep < pickUp.frontPositionAngle)
+    // front switch press = fail
+    if (digitalRead(CLAW_CLOSE_SWITCH) == PRESS_YES)
     {
-    RCServo2.write(positionStep);
-    positionStep += positionStep;
-    delay(ARM_POSITION_TICK);
+      LCD.setCursor(0,1);
+      LCD.print("Failed");
+      delay(FAIL_WAIT_TIME);
+      return;
+    }
+    // extend front position gradually
+    else if (positionStep > pickUp.frontPositionAngle)
+    {
+    RCServo2.write(frontPosition);
+    frontPosition -= positionStep;
+    delay(ARM_POSITION_TIME);
+    }
+    // no doll detection = fail
+    else
+    {
+      LCD.setCursor(0,1);
+      LCD.print("Failed");
+      delay(FAIL_WAIT_TIME);
+      return;
     }
   }
 
-  delay(ARM_WAIT_TICK);
-
+  // close claw
+  delay(ARM_WAIT_TIME);
   clawCommand(CLOSE);
+  delay(ARM_WAIT_TIME);
 
-  delay(ARM_WAIT_TICK);
+  // set movement position (NOTE ORDER)
+  delay(SERVO_WAIT_TIME);
+  RCServo2.write(movingPosition.frontPositionAngle);
+  RCServo1.write(movingPosition.backPositionAngle);
 
-
-  RCServo2.write(dropOff.frontPositionAngle);
-  delay(SERVO_WAIT_TICK);
-  RCServo1.write(dropOff.backPositionAngle);
-  delay(SERVO_WAIT_TICK);
+  // move to drop off position (NOTE ORDER)
+  delay(SERVO_WAIT_TIME);
   RCServo0.write(dropOff.baseRotationAngle);
-  delay(SERVO_WAIT_TICK);
+  delay(SERVO_WAIT_TIME);
+  RCServo2.write(dropOff.frontPositionAngle);
+  RCServo1.write(dropOff.backPositionAngle);
+  delay(SERVO_WAIT_TIME);
 
-  delay(ARM_WAIT_TICK);
-
+  // open claw
+  delay(ARM_WAIT_TIME);
   clawCommand(OPEN);
+  delay(ARM_WAIT_TIME);
 
-  delay(ARM_WAIT_TICK);
-
+  // back to reset position (NOTE ORDER)
   RCServo0.write(reset.baseRotationAngle);
-  delay(SERVO_WAIT_TICK);
-  RCServo1.write(reset.frontPositionAngle);
-  delay(SERVO_WAIT_TICK);
+  delay(SERVO_WAIT_TIME);
   RCServo2.write(reset.backPositionAngle);
-  delay(SERVO_WAIT_TICK);
+  RCServo1.write(reset.frontPositionAngle);
+  delay(SERVO_WAIT_TIME);
 }
 
 /*
@@ -63,23 +96,21 @@ void clawCommand(clamp_e command)
   {
     // close claw
     motor.speed(MOTOR_CLAW, CLAW_SPEED);
-    delay(CLAW_WAIT_TICK);
     while (digitalRead(CLAW_CLOSE_SWITCH) == PRESS_NO)
     {
-      delay(MOTOR_WRITE_WAIT_TICK);
+      delay(MOTOR_WRITE_WAIT_TIME);
     }
   }
   else
   {
     // open claw
     motor.speed(MOTOR_CLAW, -CLAW_SPEED);
-    delay(150);
     while(digitalRead(CLAW_OPEN_SWITCH) == PRESS_NO)
     {
-      delay(MOTOR_WRITE_WAIT_TICK);
+      delay(MOTOR_WRITE_WAIT_TIME);
     }
     motor.stop(MOTOR_CLAW);
-    delay(CLAW_WAIT_TICK);
+    delay(CLAW_WAIT_TIME);
   }
 }
 
@@ -93,12 +124,12 @@ void conveyorCommand(rotation_e command)
   if (command == STARBOARD)
   {
     motor.speed(MOTOR_CONVEYOR, CONVEYOR_SPEED);
-    delay(CONVEYOR_TIME_TICK);
+    delay(CONVEYOR_WAIT_TIME);
   }
   else
   {
     motor.speed(MOTOR_CONVEYOR, -CONVEYOR_SPEED);
-    delay(CONVEYOR_TIME_TICK);
+    delay(CONVEYOR_WAIT_TIME);
   }
 }
 

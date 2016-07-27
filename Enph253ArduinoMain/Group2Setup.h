@@ -70,20 +70,21 @@
 #define UTURN_TAPE_IGNORE_TIME 250 
 #define PULLOVER_SPEED 100
 #define CLAW_SPEED 100
-#define CLAW_WAIT_TICK 500
+#define CLAW_WAIT_TIME 500
 #define CONVEYOR_SPEED 100
-#define CONVEYOR_TIME_TICK 2000
-#define INTERSECTION_TURN_WAIT_TICK 5
+#define CONVEYOR_WAIT_TIME 5000
+#define INTERSECTION_TURN_WAIT_TIME 5
 #define INTERSECTION_TURN_IGNORE_TIME 500
 #define INTERSECTION_TURN_TIME 500
-#define MOTOR_WRITE_WAIT_TICK 5
-#define ARM_POSITION_TICK 500
-#define ARM_WAIT_TICK 500
+#define MOTOR_WRITE_WAIT_TIME 5
+#define ARM_POSITION_TIME 1000
+#define ARM_WAIT_TIME 500
 #define BACKUP_WAIT_TIME 250
-#define SERVO_WAIT_TICK 500
+#define SERVO_WAIT_TIME 1000
+#define FAIL_WAIT_TIME 2000
 #define CENTRE_SPEED 60
 
-#define LOST_TICK 1000
+#define LOST_TIME 1000
 
 #define THRESHOLDANGLE1 70
 #define THRESHOLDANGLE2 110
@@ -101,12 +102,12 @@ struct armPosition_t
 
 // Arm position
 armPosition_t reset = {90, 120, 0};
-armPosition_t rightPickUpInit = {0, 0, 135};
-armPosition_t rightPickUp = {0, 0, 70};
-armPosition_t leftPickUpInit = {180, 50, 135};
-armPosition_t leftPickUp = {180, 0, 70};
-armPosition_t rightDropOff = {80, 120, 100};
-armPosition_t leftDropOff = {100, 120, 100};
+armPosition_t pickUpInit = {0, 0, 135};
+armPosition_t movingPosition = {90, 120, 0};
+armPosition_t rightPickUp = {0, 0, 50};
+armPosition_t leftPickUp = {180, 0, 50};
+armPosition_t rightDropOff = {80, 140, 35};
+armPosition_t leftDropOff = {100, 140, 35};
 
 enum clamp_e {
   CLOSE, OPEN
@@ -148,9 +149,9 @@ void setTravelAngle(byte newTravelAngle)
   travelAngle = newTravelAngle;
 }
 
-int clawClampTick = 0;
-void setClawClampTick(int newClawClampTick)
+int clawClampTIME = 0;
+void setClawClampTIME(int newClawClampTIME)
 {
-  clawClampTick = newClawClampTick;
+  clawClampTIME = newClawClampTIME;
 }
 

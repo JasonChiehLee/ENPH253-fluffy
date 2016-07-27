@@ -8,7 +8,7 @@ int currentMotorSpeedRight = TAPE_FOLLOWING_DEFAULT_SPEED;
 int currentMotorSpeedLeft = TAPE_FOLLOWING_DEFAULT_SPEED;
 int tapeFollowing_lastError = 0;
 int tapeFollowing_loopCount = 0; // for testing/debug ~ remove if we're good here
-int tapeFollowing_ticksSinceLastError = 0; // m in sample code
+int tapeFollowing_TIMEsSinceLastError = 0; // m in sample code
 int tapeFollowing_lastDifferentError = 0; // recerr in sample code
 int tapeFollowing_errorHistory = 0; // q in sample code
 
@@ -52,14 +52,14 @@ void tapeFollow()
   if (currentError != tapeFollowing_lastError)
   {
     tapeFollowing_lastDifferentError = tapeFollowing_lastError;
-    tapeFollowing_errorHistory = tapeFollowing_ticksSinceLastError;//What is Q?
-    tapeFollowing_ticksSinceLastError = 1;
+    tapeFollowing_errorHistory = tapeFollowing_TIMEsSinceLastError;//What is Q?
+    tapeFollowing_TIMEsSinceLastError = 1;
   }
 
   // Add adjustments
   int pAdjust = proportionalGain * currentError;
   int dAdjust = derivativeGain * (int)(float)(currentError - tapeFollowing_lastDifferentError)
-                / (float)(tapeFollowing_ticksSinceLastError + tapeFollowing_errorHistory);
+                / (float)(tapeFollowing_TIMEsSinceLastError + tapeFollowing_errorHistory);
   int totalAdjustment = pAdjust + dAdjust;
 
   // Update motor speeds
@@ -94,9 +94,9 @@ void tapeFollow()
   }
 #endif
 
-  // Increment tick counters and write adjustments to motors, update last error
+  // Increment TIME counters and write adjustments to motors, update last error
   tapeFollowing_loopCount += 1;
-  tapeFollowing_ticksSinceLastError += 1;
+  tapeFollowing_TIMEsSinceLastError += 1;
   motor.speed(MOTOR_RIGHT_WHEEL, currentMotorSpeedRight);
   motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeedLeft);
   tapeFollowing_lastError = currentError;
@@ -131,7 +131,7 @@ void intersectionTurn(direction_e turnDirection) {
     // wait until at least one QRD is on again
     while ((digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF) && (digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF))
     {
-      delay(INTERSECTION_TURN_WAIT_TICK);
+      delay(INTERSECTION_TURN_WAIT_TIME);
     }
     motor.stop(MOTOR_RIGHT_WHEEL);
     setPreviousTurn(LEFT);
@@ -146,7 +146,7 @@ void intersectionTurn(direction_e turnDirection) {
     // wait until both QRDs are on again
     while (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF)
     {
-      delay(INTERSECTION_TURN_WAIT_TICK);
+      delay(INTERSECTION_TURN_WAIT_TIME);
     }
     motor.stop(MOTOR_LEFT_WHEEL);
     setPreviousTurn(RIGHT);
@@ -185,7 +185,7 @@ void pullOver(direction_e pulloverDirection) {
   motor.stop(secondPowerMotor);
   while (digitalRead(FRONT_RIGHT_GROUND_SWITCH) == PRESS_YES && digitalRead(FRONT_LEFT_GROUND_SWITCH) == PRESS_YES)
   {
-    delay(MOTOR_WRITE_WAIT_TICK);
+    delay(MOTOR_WRITE_WAIT_TIME);
     count++;
   }
 
@@ -193,7 +193,7 @@ void pullOver(direction_e pulloverDirection) {
   motor.speed(secondPowerMotor, PULLOVER_SPEED);
   while (count != 0)
   {
-    delay(MOTOR_WRITE_WAIT_TICK);
+    delay(MOTOR_WRITE_WAIT_TIME);
     count--;
   }
 }
@@ -243,7 +243,7 @@ void xPointTurn() {
       motor.speed(powerMotor, -UTURN_SPEED);
       motor.speed(pivotMotor, -UTURN_SPEED);
     }
-    delay(MOTOR_WRITE_WAIT_TICK);
+    delay(MOTOR_WRITE_WAIT_TIME);
   }
 
   LCD.clear();
@@ -253,7 +253,7 @@ void xPointTurn() {
   motor.speed(pivotMotor, -UTURN_SPEED >> 1);
   while (!(digitalRead(TAPE_FOLLOWING_QRD_LEFT) || digitalRead(TAPE_FOLLOWING_QRD_RIGHT)))
   {
-    delay(MOTOR_WRITE_WAIT_TICK);
+    delay(MOTOR_WRITE_WAIT_TIME);
   }
 }
 
@@ -286,7 +286,7 @@ void centreAlign (direction_e pickUp)
   int currentSignal = analogReadAvg(signalSensor);
   while (currentSignal >= lastSignal - 2)
   {
-    delay(MOTOR_WRITE_WAIT_TICK);
+    delay(MOTOR_WRITE_WAIT_TIME);
     Serial.println(currentSignal);
     lastSignal = currentSignal;
     currentSignal = analogReadAvg(signalSensor);
