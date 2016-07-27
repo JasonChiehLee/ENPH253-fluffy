@@ -100,11 +100,13 @@ struct armPosition_t
 };
 
 // Arm position
-armPosition_t reset = {90, 10, 150};
-armPosition_t rightPickUp = {0, 50, 50};
-armPosition_t leftPickUp = {180, 50, 50};
-armPosition_t rightDropOff = {80, 110, 80};
-armPosition_t leftDropOff = {100, 110, 80};
+armPosition_t reset = {90, 120, 0};
+armPosition_t rightPickUpInit = {0, 0, 135};
+armPosition_t rightPickUp = {0, 0, 70};
+armPosition_t leftPickUpInit = {180, 50, 135};
+armPosition_t leftPickUp = {180, 0, 70};
+armPosition_t rightDropOff = {80, 120, 100};
+armPosition_t leftDropOff = {100, 120, 100};
 
 enum clamp_e {
   CLOSE, OPEN
