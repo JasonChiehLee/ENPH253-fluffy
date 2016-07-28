@@ -8,6 +8,7 @@ void intersectionHandler()
 {
   boolean rightTurn = false, leftTurn = false, straightThrough = false;
 
+  // run past the intersection, checking for left and right turn availability
   for (int t = 0; t < HARD_STOP_WAIT_TIME; t += HARD_STOP_WAIT_TIME >> 4)
   {
     ((digitalRead(INTERSECTION_QRD_RIGHT) == ON) || rightTurn) ? rightTurn = true : rightTurn = false;
@@ -28,6 +29,41 @@ void intersectionHandler()
 
   (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON || digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON) ? straightThrough = true : straightThrough = false;
 
+  // If we can't move forward, wiggle a bit to make sure we can't move forward (for curved intersections)
+  if (!straightThrough && (leftTurn == rightTurn))
+  {
+    // go left
+    motor.speed(MOTOR_RIGHT_WHEEL, INTERSECTION_TURN_SPEED >> 1);
+    motor.speed(MOTOR_LEFT_WHEEL, -INTERSECTION_TURN_SPEED >> 1);
+    for (int t = 0; t < INTERSECTION_WIGGLE_TIME; t += INTERSECTION_WIGGLE_TIME >> 4)
+    {
+      if (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON || digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON)
+      {
+        straightThrough = true;
+        break;
+      }
+      delay(INTERSECTION_WIGGLE_TIME >> 4);
+    }
+    hardStop();
+  }
+  
+  if (!straightThrough && (leftTurn == rightTurn))
+  {
+    // go right
+    motor.speed(MOTOR_RIGHT_WHEEL, -INTERSECTION_TURN_SPEED >> 1);
+    motor.speed(MOTOR_LEFT_WHEEL, INTERSECTION_TURN_SPEED >> 1);
+    for (int t = 0; t < INTERSECTION_WIGGLE_TIME * 2; t += INTERSECTION_WIGGLE_TIME >> 4)
+    {
+      if (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON || digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON)
+      {
+        straightThrough = true;
+        break;
+      }
+      delay(INTERSECTION_WIGGLE_TIME >> 4);
+    }
+    hardStop();
+  }
+
   // Compute optimal direction
   // Temporarily prioritizing left-straight-right until sensors are online
   direction_e nextDirection = FORWARD;
@@ -41,33 +77,6 @@ void intersectionHandler()
   LCD.print(rightTurn);
 
   nextDirection = determineDirection(rightTurn, leftTurn, straightThrough);
-
-  /*
-    if (nextDirection == LEFT)
-    {
-    LCD.clear();
-    LCD.home();
-    LCD.print("LEFT");
-    }
-    else if (nextDirection == FORWARD)
-    {
-    LCD.clear();
-    LCD.home();
-    LCD.print("FORWARD");
-
-    }
-    else if (nextDirection == RIGHT)
-    {
-    LCD.clear();
-    LCD.home();
-    LCD.print("RIGHT");
-    }
-    else
-    {
-    LCD.clear();
-    LCD.home();
-    LCD.print("KILL YOURSELF");
-    }*/
 
   // Move to that direction
   intersectionTurn(nextDirection);
@@ -86,7 +95,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     LCD.print(" leftpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
-    delay(2000);
+    delay(INTERSECTION_WAIT_TIME);
     if (leftTurn == true)
     {
       travelDirection = LEFT;
@@ -101,7 +110,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     }
     else
     {
-      delay(5000);
+      delay(INTERSECTION_WAIT_TIME);
       xPointTurn();
     }
   }
@@ -110,7 +119,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     LCD.print(" rightpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
-    delay(2000);
+    delay(INTERSECTION_WAIT_TIME);
 
     if (rightTurn == true)
     {
@@ -126,7 +135,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     }
     else
     {
-      delay(5000);
+      delay(INTERSECTION_WAIT_TIME);
       xPointTurn();
     }
   }
@@ -135,7 +144,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     LCD.print(" straightpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
-    delay(2000);
+    delay(INTERSECTION_WAIT_TIME);
 
     if (straightThrough == true)
     {
@@ -151,7 +160,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     }
     else
     {
-      delay(5000);
+      delay(INTERSECTION_WAIT_TIME);
       xPointTurn();
     }
   }
@@ -166,11 +175,21 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
 void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropOff)
 {
   hardStop();
-  centreAlign(dollSide);
+  //centreAlign(dollSide);
   LCD.clear();
   LCD.home();
   LCD.print("DOLL");
-  delay(3000);
+  delay(DOLL_PICKUP_WAIT);
+  if (dollSide == RIGHT)
+  {
+    LCD.print(" right side");
+    delay(1000);
+  }
+  else if (dollSide == LEFT)
+  {
+    LCD.print(" left side");
+    delay(1000);
+  }
   //passengerAquire(pickUp, dropOff);
   //setLoadStatus(TRUE);
   setTravelAngle(90);

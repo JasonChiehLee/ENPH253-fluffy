@@ -11,9 +11,9 @@ byte intersectionScan()
   boolean scanSuccess = false;
 
   int one = analogRead(FRONT_QSD1);
-  int two = analogRead(FRONT_QSD2);
+  int two = 0; //analogRead(FRONT_QSD2);
   int three = analogRead(FRONT_QSD3);
-  int four = analogRead(FRONT_QSD4);
+  int four = 0; //analogRead(FRONT_QSD4);
   int five = analogRead(FRONT_QSD5);
 
   if (one > two && one > three && one > four && one > five && one > QSD_FRONT_THRESHOLD)
@@ -21,21 +21,25 @@ byte intersectionScan()
     scanSuccess = true;
     bestAngle = ONE_ANGLE;
   }
+  /* 
   else if (two > one && two > three && two > four && two > five && two > QSD_FRONT_THRESHOLD)
   {
     scanSuccess = true;
     bestAngle = TWO_ANGLE;
   }
+  */
   else if (three > one && three > two && three > four && three > five && three > QSD_FRONT_THRESHOLD)
   {
     scanSuccess = true;
     bestAngle = THREE_ANGLE;
   }
+  /*
   else if (four > one && four > two && four > three && four > five && four > QSD_FRONT_THRESHOLD)
   {
     scanSuccess = true;
     bestAngle = FOUR_ANGLE;
   }
+  */
   else if (five > one && five > two && five > three && five > four && five > QSD_FRONT_THRESHOLD)
   {
     scanSuccess = true;
