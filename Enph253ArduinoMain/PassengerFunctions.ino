@@ -9,11 +9,21 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   LCD.clear();
   LCD.home();
   LCD.print("Passenger Acquire");
-  
+
+  while (!startbutton())
+  {
+    delay(50);
+  }
+
   // set movement position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
   RCServo2.write(movingPosition.frontPositionAngle);
   RCServo1.write(movingPosition.backPositionAngle);
+
+  while (!startbutton())
+  {
+    delay(50);
+  }
 
   // move to pickup position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
@@ -32,7 +42,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
     // front switch press = fail
     if (digitalRead(CLAW_CLOSE_SWITCH) == PRESS_YES)
     {
-      LCD.setCursor(0,1);
+      LCD.setCursor(0, 1);
       LCD.print("Failed");
       delay(FAIL_WAIT_TIME);
       return;
@@ -40,14 +50,14 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
     // extend front position gradually
     else if (positionStep > pickUp.frontPositionAngle)
     {
-    RCServo2.write(frontPosition);
-    frontPosition -= positionStep;
-    delay(ARM_POSITION_TIME);
+      RCServo2.write(frontPosition);
+      frontPosition -= positionStep;
+      delay(ARM_POSITION_TIME);
     }
     // no doll detection = fail
     else
     {
-      LCD.setCursor(0,1);
+      LCD.setCursor(0, 1);
       LCD.print("Failed");
       delay(FAIL_WAIT_TIME);
       return;
@@ -59,10 +69,20 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   clawCommand(CLOSE);
   delay(ARM_WAIT_TIME);
 
+  while (!startbutton())
+  {
+    delay(50);
+  }
+
   // set movement position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
   RCServo2.write(movingPosition.frontPositionAngle);
   RCServo1.write(movingPosition.backPositionAngle);
+
+  while (!startbutton())
+  {
+    delay(50);
+  }
 
   // move to drop off position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
@@ -77,6 +97,11 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   clawCommand(OPEN);
   delay(ARM_WAIT_TIME);
 
+  while (!startbutton())
+  {
+    delay(50);
+  }
+  
   // back to reset position (NOTE ORDER)
   RCServo0.write(reset.baseRotationAngle);
   delay(SERVO_WAIT_TIME);
@@ -105,7 +130,7 @@ void clawCommand(clamp_e command)
   {
     // open claw
     motor.speed(MOTOR_CLAW, -CLAW_SPEED);
-    while(digitalRead(CLAW_OPEN_SWITCH) == PRESS_NO)
+    while (digitalRead(CLAW_OPEN_SWITCH) == PRESS_NO)
     {
       delay(MOTOR_WRITE_WAIT_TIME);
     }
