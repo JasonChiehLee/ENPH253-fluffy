@@ -13,7 +13,7 @@
 #include <LiquidCrystal.h>
 #include "Group2Setup.h"
 
-# define DEBUG 0
+# define DEBUG 1
 
 void setup()
 {
@@ -27,6 +27,12 @@ void loop()
 {
   //Main code, repeated
 #if DEBUG
+while (!startbutton())
+{
+  delay(50);
+}
+passengerAquire(rightPickUp, rightDropOff);
+/*
 LCD.home();
 LCD.clear();
 
@@ -42,6 +48,7 @@ LCD.print(digitalRead(BACK_LEFT_BUMPER_SWITCH));
 LCD.print(" ");
 LCD.print(digitalRead(BACK_RIGHT_BUMPER_SWITCH));
 delay(100);
+*/
 #else
   
   tapeFollow();

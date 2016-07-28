@@ -175,7 +175,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
 void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropOff)
 {
   hardStop();
-  //centreAlign(dollSide);
+  centreAlign(dollSide);
   LCD.clear();
   LCD.home();
   LCD.print("DOLL");
