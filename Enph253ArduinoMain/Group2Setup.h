@@ -4,10 +4,10 @@
 #define PROPORTIONAL_GAIN 15
 
 //DIGITAL INPUTS
-#define TAPE_FOLLOWING_QRD_RIGHT  11
-#define TAPE_FOLLOWING_QRD_LEFT 12
-#define INTERSECTION_QRD_RIGHT 10
-#define INTERSECTION_QRD_LEFT 9
+#define TAPE_FOLLOWING_QRD_RIGHT  12
+#define TAPE_FOLLOWING_QRD_LEFT 9
+#define INTERSECTION_QRD_RIGHT 11
+#define INTERSECTION_QRD_LEFT 10
 #define FRONT_RIGHT_GROUND_SWITCH 5
 #define FRONT_LEFT_GROUND_SWITCH 6
 #define FRONT_RIGHT_BUMPER_SWITCH 7
@@ -71,8 +71,8 @@
 #define PULLOVER_SPEED 100
 #define CLAW_SPEED 100
 #define CLAW_WAIT_TIME 500
-#define CONVEYOR_SPEED 100
-#define CONVEYOR_WAIT_TIME 5000
+#define CONVEYOR_SPEED 250
+#define CONVEYOR_WAIT_TIME 1000
 #define INTERSECTION_TURN_WAIT_TIME 5
 #define INTERSECTION_TURN_IGNORE_TIME 200
 #define INTERSECTION_TURN_TIME 500
@@ -83,7 +83,7 @@
 #define ARM_POSITION_TIME 100
 #define ARM_WAIT_TIME 500
 #define BACKUP_WAIT_TIME 250
-#define SERVO_WAIT_TIME 1000
+#define SERVO_WAIT_TIME 500
 #define FAIL_WAIT_TIME 2000
 #define CENTRE_SPEED 60
 
@@ -105,12 +105,14 @@ struct armPosition_t
 
 // Arm position
 armPosition_t reset = {90, 120, 0};
-armPosition_t pickUpInit = {0, 0, 135};
+armPosition_t pickUpInit = {0, 0, 155};
 armPosition_t movingPosition = {90, 120, 0};
-armPosition_t rightPickUp = {10, 0, 75};
-armPosition_t leftPickUp = {170, 0, 75};
-armPosition_t rightDropOff = {85, 140, 70};
-armPosition_t leftDropOff = {95, 140, 70};
+armPosition_t rightPickUp = {5, 0, 75};
+armPosition_t leftPickUp = {175, 0, 75};
+armPosition_t dropOffInit = {45, 150, 60};
+armPosition_t dropOff = {90, 150, 60};
+
+
 
 enum clamp_e {
   CLOSE, OPEN

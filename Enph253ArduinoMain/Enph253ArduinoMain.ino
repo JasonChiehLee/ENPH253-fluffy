@@ -13,7 +13,7 @@
 #include <LiquidCrystal.h>
 #include "Group2Setup.h"
 
-# define DEBUG 1
+# define DEBUG 0
 
 void setup()
 {
@@ -43,7 +43,7 @@ void loop()
     RCServo2.write(reset.frontPositionAngle);
     delay(SERVO_WAIT_TIME);
   }
-  passengerAquire(rightPickUp, rightDropOff);
+  passengerAquire(rightPickUp);
   /*
     LCD.home();
     LCD.clear();

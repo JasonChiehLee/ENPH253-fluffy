@@ -22,13 +22,6 @@ void processInterrupts()
   {
     travelAngle = intersectionScan();
 
-    // check load status
-    armPosition_t dropOff = rightDropOff;
-    if (loadStatus == TRUE)
-    {
-      dropOff = leftDropOff;
-    }
-
     // check for adjacent dolls
     if (analogReadAvg(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
     {
