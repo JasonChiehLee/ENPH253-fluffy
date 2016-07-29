@@ -71,8 +71,9 @@
 #define PULLOVER_SPEED 100
 #define CLAW_SPEED 100
 #define CLAW_WAIT_TIME 500
+#define CLAW_CLAMP_WAIT_TIME 1000
 #define CONVEYOR_SPEED 250
-#define CONVEYOR_WAIT_TIME 1000
+#define CONVEYOR_WAIT_TIME 1500
 #define INTERSECTION_TURN_WAIT_TIME 5
 #define INTERSECTION_TURN_IGNORE_TIME 200
 #define INTERSECTION_TURN_TIME 500
@@ -80,7 +81,7 @@
 #define INTERSECTION_WIGGLE_TIME 160
 #define DOLL_PICKUP_WAIT 2000
 #define MOTOR_WRITE_WAIT_TIME 5
-#define ARM_POSITION_TIME 100
+#define ARM_POSITION_TIME 250
 #define ARM_WAIT_TIME 500
 #define BACKUP_WAIT_TIME 250
 #define SERVO_WAIT_TIME 500
@@ -104,13 +105,15 @@ struct armPosition_t
 };
 
 // Arm position
-armPosition_t reset = {90, 120, 0};
-armPosition_t pickUpInit = {0, 0, 155};
-armPosition_t movingPosition = {90, 120, 0};
-armPosition_t rightPickUp = {5, 0, 75};
-armPosition_t leftPickUp = {175, 0, 75};
-armPosition_t dropOffInit = {45, 150, 60};
-armPosition_t dropOff = {90, 150, 60};
+armPosition_t reset = {100, 120, 0};
+armPosition_t pickUpInit = {0, 20, 160};
+armPosition_t pickUpInitLimit1 = {0, 0, 60};
+armPosition_t pickUpInitLimit2 = {0, 0, 120};
+armPosition_t movingPosition = {95, 120, 0};
+armPosition_t rightPickUp = {15, 20, 60};
+armPosition_t leftPickUp = {180, 20, 60};
+armPosition_t dropOffInit = {45, 150, 65};
+armPosition_t dropOff = {80, 150, 65};
 
 
 

@@ -13,7 +13,7 @@
 #include <LiquidCrystal.h>
 #include "Group2Setup.h"
 
-# define DEBUG 0
+# define DEBUG 1
 
 void setup()
 {
@@ -29,7 +29,6 @@ void loop()
 #if DEBUG
   while (!startbutton())
   {
-    delay(50);
     LCD.home();
     LCD.clear();
     LCD.print(digitalRead(CLAW_CLOSE_SWITCH));

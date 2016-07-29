@@ -17,14 +17,26 @@ void passengerAquire(armPosition_t pickUp)
 
   // move to pickup position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
-  RCServo0.write(pickUp.baseRotationAngle);
+  if (pickUp.baseRotationAngle == rightPickUp.baseRotationAngle)
+  {
+    RCServo0.write(pickUp.baseRotationAngle);
+  }
+  else
+  {
+    // less strain on arm to move in small increments
+    RCServo0.write(movingPosition.baseRotationAngle + ((pickUp.baseRotationAngle - movingPosition.baseRotationAngle) / 2));
+    delay(SERVO_WAIT_TIME);
+    RCServo0.write(pickUp.baseRotationAngle);
+  }
+  delay(SERVO_WAIT_TIME);
+  RCServo2.write(pickUpInitLimit1.frontPositionAngle);
   delay(SERVO_WAIT_TIME);
   RCServo1.write(pickUpInit.backPositionAngle);
   RCServo2.write(pickUpInit.frontPositionAngle);
   delay(SERVO_WAIT_TIME + 500);
 
   // extend front until doll detection
-  byte positionStep = (pickUpInit.frontPositionAngle - pickUp.frontPositionAngle) >> 2;
+  byte positionStep = (pickUpInit.frontPositionAngle - pickUp.frontPositionAngle) >> 3;
   byte frontPosition = pickUpInit.frontPositionAngle;
 
   while (digitalRead(DOLL_SWITCH) == PRESS_NO)
@@ -77,7 +89,17 @@ void passengerAquire(armPosition_t pickUp)
 
   // move to drop off position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
-  RCServo0.write(dropOffInit.baseRotationAngle);
+  if (pickUp.baseRotationAngle == rightPickUp.baseRotationAngle)
+  {
+    RCServo0.write(dropOffInit.baseRotationAngle);
+  }
+  else
+  {
+    // less strain on arm to move in small increments
+    RCServo0.write(pickUp.baseRotationAngle - ((pickUp.baseRotationAngle - dropOffInit.baseRotationAngle) / 2));
+    delay(SERVO_WAIT_TIME);
+    RCServo0.write(dropOffInit.baseRotationAngle);
+  }
   delay(SERVO_WAIT_TIME);
   RCServo1.write(dropOffInit.backPositionAngle);
   delay(SERVO_WAIT_TIME);
@@ -100,6 +122,8 @@ void passengerAquire(armPosition_t pickUp)
 
   conveyorCommand(STARBOARD);
   motor.stop(MOTOR_CONVEYOR);
+  delay(SERVO_WAIT_TIME);
+  RCServo0.write(movingPosition.baseRotationAngle);
 }
 
 /*
@@ -113,10 +137,13 @@ void clawCommand(clamp_e command)
   {
     // close claw
     motor.speed(MOTOR_CLAW, CLAW_SPEED);
-    while (digitalRead(CLAW_CLOSE_SWITCH) == PRESS_NO)
-    {
+    delay(CLAW_CLAMP_WAIT_TIME);
+    /*
+      while (digitalRead(CLAW_CLOSE_SWITCH) == PRESS_NO)
+      {
       delay(MOTOR_WRITE_WAIT_TIME);
-    }
+      }
+    */
   }
   else
   {
