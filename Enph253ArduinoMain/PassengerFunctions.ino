@@ -29,7 +29,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   delay(SERVO_WAIT_TIME);
   
   // extend front until doll detection
-  byte positionStep = pickUp.frontPositionAngle >> 3;
+  byte positionStep = (pickUpInit.frontPositionAngle - pickUp.frontPositionAngle) >> 3;
   byte frontPosition = pickUpInit.frontPositionAngle;
 
   while (digitalRead(DOLL_SWITCH) == PRESS_NO)
