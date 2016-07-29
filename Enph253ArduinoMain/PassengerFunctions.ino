@@ -10,11 +10,6 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   LCD.home();
   LCD.print("Passenger Acquire");
 
-  while (!startbutton())
-  {
-    delay(50);
-  }
-
   // set movement position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
   RCServo2.write(movingPosition.frontPositionAngle);
@@ -24,7 +19,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   {
     delay(50);
   }
-
+  delay(1000);
   // move to pickup position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
   RCServo0.write(pickUp.baseRotationAngle);
@@ -32,7 +27,7 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   RCServo1.write(pickUp.backPositionAngle);
   RCServo2.write(pickUp.frontPositionAngle);
   delay(SERVO_WAIT_TIME);
-
+  
   // extend front until doll detection
   byte positionStep = pickUp.frontPositionAngle >> 3;
   byte frontPosition = pickUpInit.frontPositionAngle;
@@ -40,15 +35,16 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   while (digitalRead(DOLL_SWITCH) == PRESS_NO)
   {
     // front switch press = fail
+    
     if (digitalRead(CLAW_CLOSE_SWITCH) == PRESS_YES)
     {
       LCD.setCursor(0, 1);
-      LCD.print("Failed");
+      LCD.print("Failed Front Switch");
       delay(FAIL_WAIT_TIME);
       return;
     }
     // extend front position gradually
-    else if (positionStep > pickUp.frontPositionAngle)
+    else if (frontPosition > pickUp.frontPositionAngle)
     {
       RCServo2.write(frontPosition);
       frontPosition -= positionStep;
@@ -58,10 +54,12 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
     else
     {
       LCD.setCursor(0, 1);
-      LCD.print("Failed");
+      LCD.print("Failed No Doll");
       delay(FAIL_WAIT_TIME);
       return;
     }
+    
+    delay(500);
   }
 
   // close claw
@@ -69,20 +67,10 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   clawCommand(CLOSE);
   delay(ARM_WAIT_TIME);
 
-  while (!startbutton())
-  {
-    delay(50);
-  }
-
   // set movement position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
   RCServo2.write(movingPosition.frontPositionAngle);
   RCServo1.write(movingPosition.backPositionAngle);
-
-  while (!startbutton())
-  {
-    delay(50);
-  }
 
   // move to drop off position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
@@ -101,12 +89,12 @@ void passengerAquire(armPosition_t pickUp, armPosition_t dropOff)
   {
     delay(50);
   }
-  
+  delay(1000);
   // back to reset position (NOTE ORDER)
   RCServo0.write(reset.baseRotationAngle);
   delay(SERVO_WAIT_TIME);
-  RCServo2.write(reset.backPositionAngle);
-  RCServo1.write(reset.frontPositionAngle);
+  RCServo2.write(reset.frontPositionAngle);
+  RCServo1.write(reset.backPositionAngle);
   delay(SERVO_WAIT_TIME);
 }
 

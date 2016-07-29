@@ -15,8 +15,8 @@
 #define BACK_RIGHT_BUMPER_SWITCH 3
 #define BACK_LEFT_BUMPER_SWITCH 4
 #define CLAW_CLOSE_SWITCH 13
-#define CLAW_OPEN_SWITCH 14
-#define DOLL_SWITCH 15
+#define CLAW_OPEN_SWITCH 15
+#define DOLL_SWITCH 14
 
 #define ON 1
 #define OFF 0
@@ -45,8 +45,8 @@
 //MOTOR OUTPUTS
 #define MOTOR_RIGHT_WHEEL 1
 #define MOTOR_LEFT_WHEEL 0
-#define MOTOR_CLAW 2
-#define MOTOR_CONVEYOR 3
+#define MOTOR_CLAW 3
+#define MOTOR_CONVEYOR 2
 
 //SERVO OUTPUTS
 //RCServo0 BASEPOSITION
@@ -107,10 +107,10 @@ struct armPosition_t
 armPosition_t reset = {90, 120, 0};
 armPosition_t pickUpInit = {0, 0, 135};
 armPosition_t movingPosition = {90, 120, 0};
-armPosition_t rightPickUp = {0, 0, 50};
-armPosition_t leftPickUp = {180, 0, 50};
-armPosition_t rightDropOff = {80, 140, 35};
-armPosition_t leftDropOff = {100, 140, 35};
+armPosition_t rightPickUp = {10, 0, 75};
+armPosition_t leftPickUp = {170, 0, 75};
+armPosition_t rightDropOff = {85, 140, 70};
+armPosition_t leftDropOff = {95, 140, 70};
 
 enum clamp_e {
   CLOSE, OPEN

@@ -27,30 +27,42 @@ void loop()
 {
   //Main code, repeated
 #if DEBUG
-while (!startbutton())
-{
-  delay(50);
-}
-passengerAquire(rightPickUp, rightDropOff);
-/*
-LCD.home();
-LCD.clear();
+  while (!startbutton())
+  {
+    delay(50);
+    LCD.home();
+    LCD.clear();
+    LCD.print(digitalRead(CLAW_CLOSE_SWITCH));
+    LCD.print(" ");
+    LCD.print(digitalRead(CLAW_OPEN_SWITCH));
+    LCD.print(" ");
+    LCD.print(digitalRead(DOLL_SWITCH));
+    RCServo0.write(reset.baseRotationAngle);
+    delay(SERVO_WAIT_TIME);
+    RCServo1.write(reset.backPositionAngle);
+    RCServo2.write(reset.frontPositionAngle);
+    delay(SERVO_WAIT_TIME);
+  }
+  passengerAquire(rightPickUp, rightDropOff);
+  /*
+    LCD.home();
+    LCD.clear();
 
-LCD.print(digitalRead(FRONT_LEFT_BUMPER_SWITCH));
-LCD.print(" ");
-LCD.print(digitalRead(FRONT_RIGHT_BUMPER_SWITCH));
-LCD.print(" ");
-LCD.print(digitalRead(FRONT_LEFT_GROUND_SWITCH));
-LCD.print(" ");
-LCD.print(digitalRead(FRONT_RIGHT_GROUND_SWITCH));
-LCD.print(" ");
-LCD.print(digitalRead(BACK_LEFT_BUMPER_SWITCH));
-LCD.print(" ");
-LCD.print(digitalRead(BACK_RIGHT_BUMPER_SWITCH));
-delay(100);
-*/
+    LCD.print(digitalRead(FRONT_LEFT_BUMPER_SWITCH));
+    LCD.print(" ");
+    LCD.print(digitalRead(FRONT_RIGHT_BUMPER_SWITCH));
+    LCD.print(" ");
+    LCD.print(digitalRead(FRONT_LEFT_GROUND_SWITCH));
+    LCD.print(" ");
+    LCD.print(digitalRead(FRONT_RIGHT_GROUND_SWITCH));
+    LCD.print(" ");
+    LCD.print(digitalRead(BACK_LEFT_BUMPER_SWITCH));
+    LCD.print(" ");
+    LCD.print(digitalRead(BACK_RIGHT_BUMPER_SWITCH));
+    delay(100);
+  */
 #else
-  
+
   tapeFollow();
 #endif
 }
