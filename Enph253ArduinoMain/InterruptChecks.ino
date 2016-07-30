@@ -27,14 +27,14 @@ void processInterrupts()
     {
       LCD.clear();
       LCD.home();
-      LCD.print("DOLL AQUISITION");
+      LCD.print("RIGHT DOLL AQUISITION");
       dollHandler(RIGHT, rightPickUp, dropOff);
     }
     else if (analogReadAvg(SIDE_QSD_LEFT) > QSD_SIDE_THRESHOLD)
     {
       LCD.clear();
       LCD.home();
-      LCD.print("DOLL AQUISITION");
+      LCD.print("LEFT DOLL AQUISITION");
       dollHandler(LEFT, leftPickUp, dropOff);
     }
   }

@@ -262,7 +262,7 @@ void xPointTurn() {
 
    Centres robot adjacent to doll, using the side sensor corresponding to the pickUp direction variable
 */
-void centreAlign (direction_e pickUp)
+void centreAlign(direction_e pickUp)
 {
   LCD.clear();
   LCD.home();

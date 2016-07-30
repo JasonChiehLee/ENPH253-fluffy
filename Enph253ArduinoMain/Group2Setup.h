@@ -105,15 +105,15 @@ struct armPosition_t
 };
 
 // Arm position
-armPosition_t reset = {100, 120, 0};
-armPosition_t pickUpInit = {0, 20, 160};
+armPosition_t reset = {95, 120, 0};
+armPosition_t pickUpInit = {0, 30, 160};
 armPosition_t pickUpInitLimit1 = {0, 0, 60};
 armPosition_t pickUpInitLimit2 = {0, 0, 120};
 armPosition_t movingPosition = {95, 120, 0};
-armPosition_t rightPickUp = {15, 20, 60};
-armPosition_t leftPickUp = {180, 20, 60};
+armPosition_t rightPickUp = {15, 30, 60};
+armPosition_t leftPickUp = {180, 30, 60};
 armPosition_t dropOffInit = {45, 150, 65};
-armPosition_t dropOff = {80, 150, 65};
+armPosition_t dropOff = {85, 150, 65};
 
 
 

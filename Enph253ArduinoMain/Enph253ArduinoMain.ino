@@ -20,7 +20,6 @@ void setup()
   //Setup
 #include <phys253setup.txt>
   Serial.begin(9600);
-  bool go = false;
 }
 
 void loop()
@@ -40,9 +39,9 @@ void loop()
     delay(SERVO_WAIT_TIME);
     RCServo1.write(reset.backPositionAngle);
     RCServo2.write(reset.frontPositionAngle);
-    delay(SERVO_WAIT_TIME);
   }
   passengerAquire(rightPickUp);
+  //passengerAquire(leftPickUp);
   /*
     LCD.home();
     LCD.clear();

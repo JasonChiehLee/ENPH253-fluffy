@@ -8,6 +8,7 @@
 # define QSD5 4
 # define QSD6 6
 # define QSD7 5
+# define QSD8 7
 
 void setup() {
   //Setup
@@ -28,6 +29,8 @@ void loop() {
   LCD.print(analogRead(QSD4));
   LCD.print(" ");
   LCD.setCursor(0, 1);
+  LCD.print(analogRead(QSD8));
+  LCD.print(" ");
   LCD.print(analogRead(QSD5));
   LCD.print(" ");
   LCD.print(analogRead(QSD6));

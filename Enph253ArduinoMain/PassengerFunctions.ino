@@ -177,4 +177,34 @@ void conveyorCommand(rotation_e command)
   }
 }
 
+/*
+   function - servoWrite
+
+   Writes to servo in small increments to avoid strain and minimize torque.
+*/
+void servoWrite(byte servoNum, int currentAngle, int writeAngle, byte numSteps)
+{
+  int positionStep = (writeAngle - currentAngle)/(numSteps + 1);
+  int currentPosition = currentAngle;
+  byte count = 0;
+  while (count < (numSteps + 1))
+  {
+    if (servoNum == 0)
+    {
+      RCServo0.write(currentPosition + positionStep);
+      delay(ARM_POSITION_TIME);
+    }
+    else if (servoNum == 1)
+    {
+      RCServo1.write(currentPosition + positionStep);
+      delay(ARM_POSITION_TIME);
+    }
+    else
+    {
+      RCServo2.write(currentPosition + positionStep);
+      delay(ARM_POSITION_TIME);
+    }
+    count++;
+  }
+}
 
