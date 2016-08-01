@@ -57,7 +57,7 @@
 #define QRD_GROUND_THRESHOLD 150
 
 // SIDE QSD to doll threshold
-#define QSD_SIDE_THRESHOLD 140
+#define QSD_SIDE_THRESHOLD 90
 #define QSD_FRONT_THRESHOLD 75
 
 // Navigation constants
@@ -69,7 +69,7 @@
 #define UTURN_SPEED 120
 #define UTURN_TAPE_IGNORE_TIME 250 
 #define PULLOVER_SPEED 100
-#define CLAW_SPEED 100
+#define CLAW_SPEED 200
 #define CLAW_WAIT_TIME 500
 #define CLAW_CLAMP_WAIT_TIME 1000
 #define CONVEYOR_SPEED 250
@@ -81,10 +81,10 @@
 #define INTERSECTION_WIGGLE_TIME 160
 #define DOLL_PICKUP_WAIT 2000
 #define MOTOR_WRITE_WAIT_TIME 5
-#define ARM_POSITION_TIME 250
+#define ARM_POSITION_TIME 300
 #define ARM_WAIT_TIME 500
 #define BACKUP_WAIT_TIME 250
-#define SERVO_WAIT_TIME 500
+#define SERVO_WAIT_TIME 400
 #define FAIL_WAIT_TIME 2000
 #define CENTRE_SPEED 60
 
@@ -113,7 +113,7 @@ armPosition_t movingPosition = {95, 120, 0};
 armPosition_t rightPickUp = {15, 30, 60};
 armPosition_t leftPickUp = {180, 30, 60};
 armPosition_t dropOffInit = {45, 150, 65};
-armPosition_t dropOff = {85, 150, 65};
+armPosition_t dropOff = {90, 150, 65};
 
 
 

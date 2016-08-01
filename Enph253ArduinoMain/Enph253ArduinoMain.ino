@@ -13,13 +13,23 @@
 #include <LiquidCrystal.h>
 #include "Group2Setup.h"
 
-# define DEBUG 1
+# define DEBUG 0
 
 void setup()
 {
   //Setup
 #include <phys253setup.txt>
   Serial.begin(9600);
+  
+  while (!startbutton())
+  {
+    LCD.clear();
+    LCD.home();
+    LCD.print("PRESS START");
+    delay(250);
+    armInit();
+  }
+  
 }
 
 void loop()
@@ -40,7 +50,8 @@ void loop()
     RCServo1.write(reset.backPositionAngle);
     RCServo2.write(reset.frontPositionAngle);
   }
-  passengerAquire(rightPickUp);
+  passengerAquire(leftPickUp);
+
   //passengerAquire(leftPickUp);
   /*
     LCD.home();
@@ -60,7 +71,7 @@ void loop()
     delay(100);
   */
 #else
-
   tapeFollow();
+  //conveyorCommand(PORT);
 #endif
 }

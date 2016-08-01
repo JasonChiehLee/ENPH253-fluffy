@@ -80,13 +80,18 @@ void passengerAquire(armPosition_t pickUp)
   // close claw
   delay(ARM_WAIT_TIME);
   clawCommand(CLOSE);
-  delay(ARM_WAIT_TIME);
 
   // set movement position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
   RCServo2.write(movingPosition.frontPositionAngle);
   RCServo1.write(movingPosition.backPositionAngle);
 
+  /*
+    if (digitalRead(DOLL_SWITCH) == PRESS_NO)
+    {
+      return;
+    }
+  */
   // move to drop off position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
   if (pickUp.baseRotationAngle == rightPickUp.baseRotationAngle)
@@ -110,7 +115,6 @@ void passengerAquire(armPosition_t pickUp)
   // open claw
   delay(ARM_WAIT_TIME);
   clawCommand(OPEN);
-  delay(ARM_WAIT_TIME);
 
   // back to reset position (NOTE ORDER)
   delay(SERVO_WAIT_TIME);
@@ -122,6 +126,7 @@ void passengerAquire(armPosition_t pickUp)
 
   conveyorCommand(STARBOARD);
   motor.stop(MOTOR_CONVEYOR);
+
   delay(SERVO_WAIT_TIME);
   RCServo0.write(movingPosition.baseRotationAngle);
 }
@@ -184,7 +189,7 @@ void conveyorCommand(rotation_e command)
 */
 void servoWrite(byte servoNum, int currentAngle, int writeAngle, byte numSteps)
 {
-  int positionStep = (writeAngle - currentAngle)/(numSteps + 1);
+  int positionStep = (writeAngle - currentAngle) / (numSteps + 1);
   int currentPosition = currentAngle;
   byte count = 0;
   while (count < (numSteps + 1))
@@ -206,5 +211,14 @@ void servoWrite(byte servoNum, int currentAngle, int writeAngle, byte numSteps)
     }
     count++;
   }
+}
+
+void armInit()
+{
+  delay(SERVO_WAIT_TIME);
+  RCServo0.write(reset.baseRotationAngle);
+  delay(SERVO_WAIT_TIME);
+  RCServo1.write(reset.backPositionAngle);
+  RCServo2.write(reset.frontPositionAngle);
 }
 

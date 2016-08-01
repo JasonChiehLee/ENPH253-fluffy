@@ -184,11 +184,13 @@ void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropO
   {
     LCD.print(" right side");
     delay(1000);
+    passengerAquire(rightPickUp);
   }
   else if (dollSide == LEFT)
   {
     LCD.print(" left side");
     delay(1000);
+    passengerAquire(leftPickUp);
   }
   //passengerAquire(pickUp, dropOff);
   //setLoadStatus(TRUE);
