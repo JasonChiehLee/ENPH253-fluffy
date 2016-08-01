@@ -129,6 +129,9 @@ void passengerAquire(armPosition_t pickUp)
 
   delay(SERVO_WAIT_TIME);
   RCServo0.write(movingPosition.baseRotationAngle);
+
+  //increment doll count
+  dollCount ++;
 }
 
 /*

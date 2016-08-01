@@ -46,7 +46,7 @@ void intersectionHandler()
     }
     hardStop();
   }
-  
+
   if (!straightThrough && (leftTurn == rightTurn))
   {
     // go right
@@ -183,16 +183,55 @@ void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropO
   if (dollSide == RIGHT)
   {
     LCD.print(" right side");
-    delay(1000);
+    //delay(1000);
     passengerAquire(rightPickUp);
   }
   else if (dollSide == LEFT)
   {
     LCD.print(" left side");
-    delay(1000);
+    //delay(1000);
     passengerAquire(leftPickUp);
   }
-  //passengerAquire(pickUp, dropOff);
   //setLoadStatus(TRUE);
   setTravelAngle(90);
 }
+
+/*
+   function - dropoffSide
+
+   Handles drop-off, depending on input side direction
+*/
+void dropoffHandler(direction_e dropoffSide)
+{
+  if (dropoffSide == RIGHT)
+  {
+    hardStop();
+
+    // spin the dolls off
+    motor.speed(MOTOR_CONVEYOR, -CONVEYOR_SPEED);
+    delay(DROPOFF_CONVEYOR_WAIT_TIME);
+    motor.stop(MOTOR_CONVEYOR);
+  }
+  else // left side dropoff
+  {
+    // need to move forward, and turn around
+    // @TODO how to move forward, while keeping tape? or do the amazing hard coding?
+    // Here's some awesome hard coding for now
+    motor.speed(MOTOR_RIGHT_WHEEL, PULLOVER_SPEED);
+    motor.speed(MOTOR_LEFT_WHEEL, PULLOVER_SPEED);
+    delay(DROPOFF_TURN_AROUND_WAIT);
+    hardStop();
+
+    // Turn around, and unload
+    xPointTurn();
+    hardStop();
+    // spin the dolls off
+    motor.speed(MOTOR_CONVEYOR, -CONVEYOR_SPEED);
+    delay(DROPOFF_CONVEYOR_WAIT_TIME);
+    motor.stop(MOTOR_CONVEYOR);
+  }
+
+
+  dollCount = 0;
+}
+

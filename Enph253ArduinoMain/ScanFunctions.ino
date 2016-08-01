@@ -1,49 +1,47 @@
 /*
-   function - intersectionScan
+   function - directionScan
 
-   Scans at an intersection using the specified analog input, sets the angle for the highest signal.
-   If there are no signals above the threshold, sets the angle as 90.
+   Scans using 3 analog inputs, dependant on the input boolean (true for front, false for top), I know that's a bit hacky, big sorry.
+   Sets best angle depending on these readings, does not set if none are above threshold.
 */
-byte intersectionScan()
+void directionalScanScan(bool front)
 {
 
   byte bestAngle = 90;
   boolean scanSuccess = false;
+  int leftQSD = 0, rightQSD = 0, straightQSD = 0, threshold = 1055;
 
-  int one = analogRead(FRONT_QSD1);
-  int two = 0; //analogRead(FRONT_QSD2);
-  int three = analogRead(FRONT_QSD3);
-  int four = 0; //analogRead(FRONT_QSD4);
-  int five = analogRead(FRONT_QSD5);
+  // read values, depending on front or top input request
+  if (front)
+  {
+    leftQSD = analogRead(FRONT_QSD_LEFT);
+    straightQSD = analogRead(FRONT_QSD_STRAIGHT);
+    rightQSD = analogRead(FRONT_QSD_RIGHT);
+    threshold = QSD_FRONT_THRESHOLD;
+  }
+  else
+  {
+    leftQSD = analogRead(TOP_QSD_LEFT);
+    straightQSD = analogRead(TOP_QSD_STRAIGHT);
+    rightQSD = analogRead(TOP_QSD_RIGHT);
+    threshold = QSD_TOP_THRESHOLD;
+  }
 
-  if (one > two && one > three && one > four && one > five && one > QSD_FRONT_THRESHOLD)
+  // report greatest reading as best angle to go
+  if (leftQSD > threshold && leftQSD >= straightQSD && leftQSD >= rightQSD)
   {
     scanSuccess = true;
-    bestAngle = ONE_ANGLE;
+    bestAngle = LEFT_ANGLE;
   }
-  /* 
-  else if (two > one && two > three && two > four && two > five && two > QSD_FRONT_THRESHOLD)
+  else if (rightQSD > threshold && rightQSD >= straightQSD && rightQSD > leftQSD)
   {
     scanSuccess = true;
-    bestAngle = TWO_ANGLE;
+    bestAngle = RIGHT_ANGLE;
   }
-  */
-  else if (three > one && three > two && three > four && three > five && three > QSD_FRONT_THRESHOLD)
+  else if (straightQSD > threshold && straightQSD > leftQSD && straightQSD > rightQSD)
   {
     scanSuccess = true;
-    bestAngle = THREE_ANGLE;
-  }
-  /*
-  else if (four > one && four > two && four > three && four > five && four > QSD_FRONT_THRESHOLD)
-  {
-    scanSuccess = true;
-    bestAngle = FOUR_ANGLE;
-  }
-  */
-  else if (five > one && five > two && five > three && five > four && five > QSD_FRONT_THRESHOLD)
-  {
-    scanSuccess = true;
-    bestAngle = FIVE_ANGLE;
+    bestAngle = FORWARD_ANGLE;
   }
 
   if (scanSuccess)
@@ -52,40 +50,13 @@ byte intersectionScan()
   }
 }
 
+
 /*
-   function - dropOffScan
-
-   Scans at an intersection using the specified analog input, returns the corresponding angle with the largest signal.
-
-   Assumes the scanning servo is connected to port X
+   function - analogReadAvg
 */
-void dropOffScan()
+
+int analogReadAvg(byte port)
 {
-  byte angle = 0;
-  byte varAngle = 0;
-  int largestSignal = 0;
-
-  RCServo0.write(varAngle);
-
-  while (varAngle <= 180)
-  {
-    RCServo0.write(varAngle);
-    if (analogRead(TOP_QSD) > largestSignal)
-    {
-      largestSignal = analogRead(TOP_QSD);
-      angle = varAngle;
-    }
-    varAngle = varAngle + 20;
-  }
-  setTravelAngle(varAngle);
-}
-
-/*
- * function - analogReadAvg
- */
-
- int analogReadAvg(byte port)
- {
   int retval = 0;
 
   for (int i = 0; i < 16; i++)
@@ -94,5 +65,5 @@ void dropOffScan()
   }
 
   return retval >> 4;
- }
+}
 

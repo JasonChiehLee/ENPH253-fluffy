@@ -22,9 +22,8 @@ void tapeFollow()
   currentMotorSpeedRight = TAPE_FOLLOWING_DEFAULT_SPEED;
   currentMotorSpeedLeft = TAPE_FOLLOWING_DEFAULT_SPEED;
 
-  // @TODO: move these to # defines after calibrating?
-  int proportionalGain = PROPORTIONAL_GAIN; //knob(6) >> 2;
-  int derivativeGain = DERIVATIVE_GAIN; //knob(7) >> 2;
+  int proportionalGain = PROPORTIONAL_GAIN;
+  int derivativeGain = DERIVATIVE_GAIN;
 
   int rightQRD = digitalRead(TAPE_FOLLOWING_QRD_RIGHT);
   int leftQRD = digitalRead(TAPE_FOLLOWING_QRD_LEFT);
@@ -71,23 +70,27 @@ void tapeFollow()
   {
     LCD.clear();
     LCD.setCursor(0, 0);
-    LCD.print(analogRead(FRONT_QSD1));
+    LCD.print(analogRead(FRONT_QSD_LEFT));
 
-    LCD.setCursor(5, 0);
-    LCD.print(analogRead(FRONT_QSD2));
+    LCD.setCursor(4, 0);
+    LCD.print(analogRead(FRONT_QSD_STRAIGHT));
 
-    LCD.setCursor(10, 0);
-    LCD.print(analogRead(FRONT_QSD3));
+    LCD.setCursor(8, 0);
+    LCD.print(analogRead(FRONT_QSD_RIGHT));
+
+    LCD.setCursor(12, 0);
+    LCD.print(analogRead(TOP_QSD_LEFT));
 
     LCD.setCursor(0, 1);
-    LCD.print(analogRead(FRONT_QSD4));
+    LCD.print(analogRead(TOP_QSD_STRAIGHT));
 
-    LCD.setCursor(5, 1);
-    LCD.print(analogRead(FRONT_QSD5));
-
-    LCD.setCursor(10, 1);
+    LCD.setCursor(4, 1);
+    LCD.print(analogRead(TOP_QSD_RIGHT));
+    
+    LCD.setCursor(8, 1);
     LCD.print(analogRead(SIDE_QSD_LEFT));
-    LCD.print(" ");
+    
+    LCD.setCursor(12, 1);
     LCD.print(analogRead(SIDE_QSD_RIGHT));
 
     tapeFollowing_loopCount = 0;
@@ -293,8 +296,6 @@ void centreAlign(direction_e pickUp)
   }
   motor.stop(MOTOR_RIGHT_WHEEL);
   motor.stop(MOTOR_LEFT_WHEEL);
-
-  delay(3000);
 
   // @TODO do we need a backing up section?
 

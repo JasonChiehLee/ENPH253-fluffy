@@ -26,7 +26,7 @@ void setup()
     LCD.clear();
     LCD.home();
     LCD.print("PRESS START");
-    delay(250);
+    delay(100);
     armInit();
   }
   

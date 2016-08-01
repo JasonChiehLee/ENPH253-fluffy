@@ -13,14 +13,28 @@
 */
 void processInterrupts()
 {
-  byte travelAngle = 90;
-  if (dropStatus == TRUE)
+  //byte travelAngle = 90;
+  // we shouldn't reset every loop, right?
+
+  // dropoff only mode checks
+  if (dollCount >= 2)
   {
-    dropOffScan(); // also sets travel angle
+    intersectionScan(false);
+
+    // check for andjacent dropoff zone
+    if (analogReadAvg(TOP_QSD_LEFT) > AT_DROPOFF_ZONE_THRESHOLD)
+    {
+      dropoffHandler(LEFT);
+    }
+    else if (analogReadAvg(TOP_QSD_RIGHT) > AT_DROPOFF_ZONE_THRESHOLD)
+    {
+      dropoffHandler(RIGHT);
+    }
   }
+  // search mode only checks
   else
   {
-    travelAngle = intersectionScan();
+    intersectionScan(true);
 
     // check for adjacent dolls
     if (analogReadAvg(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
