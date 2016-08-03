@@ -8,7 +8,7 @@ int currentMotorSpeedRight = TAPE_FOLLOWING_DEFAULT_SPEED;
 int currentMotorSpeedLeft = TAPE_FOLLOWING_DEFAULT_SPEED;
 int tapeFollowing_lastError = 0;
 int tapeFollowing_loopCount = 0; // for testing/debug ~ remove if we're good here
-int tapeFollowing_TIMEsSinceLastError = 0; // m in sample code
+int tapeFollowing_ticksSinceLastError = 0; // m in sample code
 int tapeFollowing_lastDifferentError = 0; // recerr in sample code
 int tapeFollowing_errorHistory = 0; // q in sample code
 
@@ -51,14 +51,14 @@ void tapeFollow()
   if (currentError != tapeFollowing_lastError)
   {
     tapeFollowing_lastDifferentError = tapeFollowing_lastError;
-    tapeFollowing_errorHistory = tapeFollowing_TIMEsSinceLastError;//What is Q?
-    tapeFollowing_TIMEsSinceLastError = 1;
+    tapeFollowing_errorHistory = tapeFollowing_ticksSinceLastError;//What is Q?
+    tapeFollowing_ticksSinceLastError = 1;
   }
 
   // Add adjustments
   int pAdjust = proportionalGain * currentError;
   int dAdjust = derivativeGain * (int)(float)(currentError - tapeFollowing_lastDifferentError)
-                / (float)(tapeFollowing_TIMEsSinceLastError + tapeFollowing_errorHistory);
+                / (float)(tapeFollowing_ticksSinceLastError + tapeFollowing_errorHistory);
   int totalAdjustment = pAdjust + dAdjust;
 
   // Update motor speeds
@@ -68,30 +68,33 @@ void tapeFollow()
 #if 1 // FOR DEBUG/TEST, DISABLE FOR ACTUAL RUNNING
   if (tapeFollowing_loopCount == 30)
   {
-    LCD.clear();
-    LCD.setCursor(0, 0);
-    LCD.print(analogRead(FRONT_QSD_LEFT));
+    if (!turnBiased)
+    {
+      LCD.clear();
+      LCD.setCursor(0, 0);
+      LCD.print(analogRead(FRONT_QSD_LEFT));
 
-    LCD.setCursor(4, 0);
-    LCD.print(analogRead(FRONT_QSD_STRAIGHT));
+      LCD.setCursor(4, 0);
+      LCD.print(analogRead(FRONT_QSD_STRAIGHT));
 
-    LCD.setCursor(8, 0);
-    LCD.print(analogRead(FRONT_QSD_RIGHT));
+      LCD.setCursor(8, 0);
+      LCD.print(analogRead(FRONT_QSD_RIGHT));
 
-    LCD.setCursor(12, 0);
-    LCD.print(analogRead(TOP_QSD_LEFT));
+      LCD.setCursor(12, 0);
+      LCD.print(analogRead(TOP_QSD_LEFT));
 
-    LCD.setCursor(0, 1);
-    LCD.print(analogRead(TOP_QSD_STRAIGHT));
+      LCD.setCursor(0, 1);
+      LCD.print(analogRead(TOP_QSD_STRAIGHT));
 
-    LCD.setCursor(4, 1);
-    LCD.print(analogRead(TOP_QSD_RIGHT));
-    
-    LCD.setCursor(8, 1);
-    LCD.print(analogRead(SIDE_QSD_LEFT));
-    
-    LCD.setCursor(12, 1);
-    LCD.print(analogRead(SIDE_QSD_RIGHT));
+      LCD.setCursor(4, 1);
+      LCD.print(analogRead(TOP_QSD_RIGHT));
+
+      LCD.setCursor(8, 1);
+      LCD.print(analogRead(SIDE_QSD_LEFT));
+
+      LCD.setCursor(12, 1);
+      LCD.print(analogRead(SIDE_QSD_RIGHT));
+    }
 
     tapeFollowing_loopCount = 0;
   }
@@ -99,7 +102,7 @@ void tapeFollow()
 
   // Increment TIME counters and write adjustments to motors, update last error
   tapeFollowing_loopCount += 1;
-  tapeFollowing_TIMEsSinceLastError += 1;
+  tapeFollowing_ticksSinceLastError += 1;
   motor.speed(MOTOR_RIGHT_WHEEL, currentMotorSpeedRight);
   motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeedLeft);
   tapeFollowing_lastError = currentError;
@@ -160,6 +163,7 @@ void intersectionTurn(direction_e turnDirection) {
     motor.speed(MOTOR_RIGHT_WHEEL, currentMotorSpeedRight);
     motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeedLeft);
   }
+  turnBiased = false;
   setTravelAngle(90);
 }
 

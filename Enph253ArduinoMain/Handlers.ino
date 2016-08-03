@@ -30,7 +30,7 @@ void intersectionHandler()
   (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON || digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON) ? straightThrough = true : straightThrough = false;
 
   // If we can't move forward, wiggle a bit to make sure we can't move forward (for curved intersections)
-  if (!straightThrough && (leftTurn == rightTurn))
+  if (!straightThrough)
   {
     // go left
     motor.speed(MOTOR_RIGHT_WHEEL, INTERSECTION_TURN_SPEED >> 1);
@@ -42,12 +42,14 @@ void intersectionHandler()
         straightThrough = true;
         break;
       }
+      ((digitalRead(INTERSECTION_QRD_RIGHT) == ON) || rightTurn) ? rightTurn = true : rightTurn = false;
+      ((digitalRead(INTERSECTION_QRD_LEFT) == ON) || leftTurn) ? leftTurn = true : leftTurn = false;
       delay(INTERSECTION_WIGGLE_TIME >> 4);
     }
     hardStop();
   }
 
-  if (!straightThrough && (leftTurn == rightTurn))
+  if (!straightThrough)
   {
     // go right
     motor.speed(MOTOR_RIGHT_WHEEL, -INTERSECTION_TURN_SPEED >> 1);
@@ -59,6 +61,8 @@ void intersectionHandler()
         straightThrough = true;
         break;
       }
+      ((digitalRead(INTERSECTION_QRD_RIGHT) == ON) || rightTurn) ? rightTurn = true : rightTurn = false;
+      ((digitalRead(INTERSECTION_QRD_LEFT) == ON) || leftTurn) ? leftTurn = true : leftTurn = false;
       delay(INTERSECTION_WIGGLE_TIME >> 4);
     }
     hardStop();
@@ -203,6 +207,12 @@ void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropO
 */
 void dropoffHandler(direction_e dropoffSide)
 {
+  LCD.home();
+  LCD.clear();
+  LCD.print("DROPOFF");
+  hardStop();
+  delay(3000);
+
   if (dropoffSide == RIGHT)
   {
     hardStop();

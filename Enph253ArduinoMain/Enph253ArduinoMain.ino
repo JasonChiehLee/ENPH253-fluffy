@@ -15,6 +15,9 @@
 
 # define DEBUG 0
 
+// for printing debug
+bool turnBiased = false;
+
 void setup()
 {
   //Setup
@@ -29,7 +32,7 @@ void setup()
     delay(100);
     armInit();
   }
-  
+  timerInit();
 }
 
 void loop()

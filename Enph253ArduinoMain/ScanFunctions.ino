@@ -4,7 +4,7 @@
    Scans using 3 analog inputs, dependant on the input boolean (true for front, false for top), I know that's a bit hacky, big sorry.
    Sets best angle depending on these readings, does not set if none are above threshold.
 */
-void directionalScanScan(bool front)
+void directionalScan(bool front)
 {
 
   byte bestAngle = 90;
@@ -46,6 +46,9 @@ void directionalScanScan(bool front)
 
   if (scanSuccess)
   {
+    LCD.clear();
+    LCD.home();
+    LCD.print(bestAngle);
     setTravelAngle(bestAngle);
   }
 }

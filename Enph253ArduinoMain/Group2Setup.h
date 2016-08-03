@@ -28,11 +28,11 @@
 #define SIDE_QSD_RIGHT 2
 #define SIDE_QSD_LEFT 0
 // from the left
-#define FRONT_QSD_LEFT 1
-#define FRONT_QSD_STRAIGHT 3
-#define FRONT_QSD_RIGHT 4
-#define TOP_QSD_LEFT 6
-#define TOP_QSD_STRAIGHT 5
+#define FRONT_QSD_LEFT 4
+#define FRONT_QSD_STRAIGHT 6
+#define FRONT_QSD_RIGHT 5
+#define TOP_QSD_LEFT 1
+#define TOP_QSD_STRAIGHT 3
 #define TOP_QSD_RIGHT 7
 
 //FRONT QSD ANGLE
@@ -56,8 +56,8 @@
 #define QSD_FRONT_THRESHOLD 75
 
 // Top QSD to dropoff zone threshold
-#define QSD_TOP_THRESHOLD 100
-#define AT_DROPOFF_ZONE_THRESHOLD 400
+#define QSD_TOP_THRESHOLD 40
+#define AT_DROPOFF_ZONE_THRESHOLD 300
 
 // Navigation constants
 #define TAPE_FOLLOWING_CORRECTION 3
@@ -76,7 +76,7 @@
 #define INTERSECTION_TURN_IGNORE_TIME 200
 #define INTERSECTION_TURN_TIME 500
 #define INTERSECTION_WAIT_TIME 1000
-#define INTERSECTION_WIGGLE_TIME 160
+#define INTERSECTION_WIGGLE_TIME 120
 #define DOLL_PICKUP_WAIT 500
 #define MOTOR_WRITE_WAIT_TIME 5
 #define ARM_POSITION_TIME 300
@@ -85,8 +85,8 @@
 #define SERVO_WAIT_TIME 400
 #define FAIL_WAIT_TIME 2000
 #define CENTRE_SPEED 60
-#define DROPOFF_CONVEYOR_WAIT_TIME 1500
-#define DROPOFF_TURN_AROUND_WAIT 2000
+#define DROPOFF_CONVEYOR_WAIT_TIME 2500
+#define DROPOFF_TURN_AROUND_WAIT 1000
 
 #define LOST_TIME 1000
 
@@ -163,4 +163,21 @@ void setClawClampTIME(int newClawClampTIME)
   clawClampTIME = newClawClampTIME;
 }
 
-int dollCount = 0;
+int startTime = 0;
+
+/*
+ * function - timerInit
+ * 
+ * Initializes the timer, so timeElapsed() can be called. Should be called at end of setup
+ */
+void timerInit()
+{
+  startTime = millis() / 1000;
+}
+
+int timeElapsed()
+{
+  return millis() / 1000 - startTime;
+}
+
+int dollCount = 2;

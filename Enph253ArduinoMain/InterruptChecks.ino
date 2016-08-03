@@ -19,14 +19,14 @@ void processInterrupts()
   // dropoff only mode checks
   if (dollCount >= 2)
   {
-    intersectionScan(false);
+    directionalScan(false);
 
     // check for andjacent dropoff zone
-    if (analogReadAvg(TOP_QSD_LEFT) > AT_DROPOFF_ZONE_THRESHOLD)
+    if (analogRead(TOP_QSD_LEFT) > AT_DROPOFF_ZONE_THRESHOLD)
     {
       dropoffHandler(LEFT);
     }
-    else if (analogReadAvg(TOP_QSD_RIGHT) > AT_DROPOFF_ZONE_THRESHOLD)
+    else if (analogRead(TOP_QSD_RIGHT) > AT_DROPOFF_ZONE_THRESHOLD)
     {
       dropoffHandler(RIGHT);
     }
@@ -34,7 +34,7 @@ void processInterrupts()
   // search mode only checks
   else
   {
-    intersectionScan(true);
+    directionalScan(true);
 
     // check for adjacent dolls
     if (analogReadAvg(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
