@@ -14,16 +14,16 @@ void directionalScan(bool front)
   // read values, depending on front or top input request
   if (front)
   {
-    leftQSD = analogRead(FRONT_QSD_LEFT);
-    straightQSD = analogRead(FRONT_QSD_STRAIGHT);
-    rightQSD = analogRead(FRONT_QSD_RIGHT);
+    leftQSD = analogReadAvg(FRONT_QSD_LEFT);
+    straightQSD = analogReadAvg(FRONT_QSD_STRAIGHT);
+    rightQSD = analogReadAvg(FRONT_QSD_RIGHT);
     threshold = QSD_FRONT_THRESHOLD;
   }
   else
   {
-    leftQSD = analogRead(TOP_QSD_LEFT);
-    straightQSD = analogRead(TOP_QSD_STRAIGHT);
-    rightQSD = analogRead(TOP_QSD_RIGHT);
+    leftQSD = analogReadAvg(TOP_QSD_LEFT);
+    straightQSD = analogReadAvg(TOP_QSD_STRAIGHT);
+    rightQSD = analogReadAvg(TOP_QSD_RIGHT);
     threshold = QSD_TOP_THRESHOLD;
   }
 

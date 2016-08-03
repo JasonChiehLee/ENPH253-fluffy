@@ -16,8 +16,14 @@ void processInterrupts()
   //byte travelAngle = 90;
   // we shouldn't reset every loop, right?
 
+  // update search/return mode
+  if (!doneSearching && dollCount >=2)
+  {
+    doneSearching = true;
+  }
+  
   // dropoff only mode checks
-  if (dollCount >= 2)
+  if (doneSearching)
   {
     directionalScan(false);
 

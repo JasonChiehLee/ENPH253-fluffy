@@ -12,15 +12,18 @@ int tapeFollowing_ticksSinceLastError = 0; // m in sample code
 int tapeFollowing_lastDifferentError = 0; // recerr in sample code
 int tapeFollowing_errorHistory = 0; // q in sample code
 
-void tapeFollow()
+void tapeFollow(bool interruptsEnabled, byte defaultSpeed)
 { // Left is negative, right is positive!
 
   // Check for interrupts
-  processInterrupts();
+  if (interruptsEnabled)
+  {
+    processInterrupts();
+  }
 
   // Reset motor speeds
-  currentMotorSpeedRight = TAPE_FOLLOWING_DEFAULT_SPEED;
-  currentMotorSpeedLeft = TAPE_FOLLOWING_DEFAULT_SPEED;
+  currentMotorSpeedRight = defaultSpeed;
+  currentMotorSpeedLeft = defaultSpeed;
 
   int proportionalGain = PROPORTIONAL_GAIN;
   int derivativeGain = DERIVATIVE_GAIN;
@@ -171,8 +174,8 @@ void intersectionTurn(direction_e turnDirection) {
    function - pullOver
 
    Pull over in a specified direction and uses the front, ground switches to find edge of surface!
-*/
-void pullOver(direction_e pulloverDirection) {
+
+  void pullOver(direction_e pulloverDirection) {
   int count = 0;
   byte firstPowerMotor;
   byte secondPowerMotor;
@@ -203,7 +206,8 @@ void pullOver(direction_e pulloverDirection) {
     delay(MOTOR_WRITE_WAIT_TIME);
     count--;
   }
-}
+  }
+*/
 
 /*
    function - xPointTurn

@@ -225,3 +225,11 @@ void armInit()
   RCServo2.write(reset.frontPositionAngle);
 }
 
+void unload()
+{
+  // spin the dolls off
+    motor.speed(MOTOR_CONVEYOR, -CONVEYOR_SPEED);
+    delay(DROPOFF_CONVEYOR_WAIT_TIME);
+    motor.stop(MOTOR_CONVEYOR);
+}
+

@@ -99,7 +99,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     LCD.print(" leftpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
-    delay(INTERSECTION_WAIT_TIME);
+    //delay(INTERSECTION_WAIT_TIME);
     if (leftTurn == true)
     {
       travelDirection = LEFT;
@@ -123,7 +123,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     LCD.print(" rightpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
-    delay(INTERSECTION_WAIT_TIME);
+    //delay(INTERSECTION_WAIT_TIME);
 
     if (rightTurn == true)
     {
@@ -148,7 +148,7 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
     LCD.print(" straightpref");
     LCD.setCursor(0, 1);
     LCD.print(travelAngle);
-    delay(INTERSECTION_WAIT_TIME);
+    //delay(INTERSECTION_WAIT_TIME);
 
     if (straightThrough == true)
     {
@@ -211,16 +211,13 @@ void dropoffHandler(direction_e dropoffSide)
   LCD.clear();
   LCD.print("DROPOFF");
   hardStop();
-  delay(3000);
 
   if (dropoffSide == RIGHT)
   {
     hardStop();
-
-    // spin the dolls off
-    motor.speed(MOTOR_CONVEYOR, -CONVEYOR_SPEED);
-    delay(DROPOFF_CONVEYOR_WAIT_TIME);
-    motor.stop(MOTOR_CONVEYOR);
+    motor.speed(MOTOR_RIGHT_WHEEL, PULLOVER_SPEED >> 1);
+    motor.speed(MOTOR_LEFT_WHEEL, PULLOVER_SPEED >> 1);
+    unload();
   }
   else // left side dropoff
   {
@@ -234,14 +231,16 @@ void dropoffHandler(direction_e dropoffSide)
 
     // Turn around, and unload
     xPointTurn();
-    hardStop();
-    // spin the dolls off
     motor.speed(MOTOR_CONVEYOR, -CONVEYOR_SPEED);
-    delay(DROPOFF_CONVEYOR_WAIT_TIME);
+    long dropoffStartTime = millis();
+    while(millis() - dropoffStartTime < DROPOFF_CONVEYOR_WAIT_TIME)
+    {
+      tapeFollow(false, TAPE_FOLLOWING_REDUCED_SPEED);
+    }
     motor.stop(MOTOR_CONVEYOR);
   }
 
-
+  doneSearching = false;
   dollCount = 0;
 }
 
