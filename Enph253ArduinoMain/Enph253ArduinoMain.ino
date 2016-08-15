@@ -8,9 +8,9 @@
 #include "Group2Setup.h"
 
 # define DEBUG 0
+# define SENSOR_DEBUG 0
 
 // for printing debug
-bool turnBiased = false;
 
 void setup()
 {

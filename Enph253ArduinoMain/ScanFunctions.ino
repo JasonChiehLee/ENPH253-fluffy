@@ -46,10 +46,13 @@ void directionalScan(bool front)
 
   if (scanSuccess)
   {
-    LCD.clear();
-    LCD.home();
-    LCD.print(bestAngle);
+    turnBiased = true;
     setTravelAngle(bestAngle);
+#if SENSOR_DEBUG
+    LCD.home();
+    LCD.clear();
+    LCD.print(bestAngle);
+#endif
   }
 }
 

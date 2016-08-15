@@ -17,17 +17,14 @@ void processInterrupts()
   // we shouldn't reset every loop, right?
 
   // update search/return mode
-  if (!doneSearching && dollCount >=2)
+  if (!doneSearching && dollCount >= 2)
   {
     doneSearching = true;
   }
-  
-  // dropoff only mode checks
-  if (doneSearching)
-  {
-    directionalScan(false);
 
-    // check for andjacent dropoff zone
+  // check for andjacent dropoff zone
+  if (doneSearching || dollCount > 0)
+  {
     if (analogRead(TOP_QSD_LEFT) > AT_DROPOFF_ZONE_THRESHOLD)
     {
       dropoffHandler(LEFT);
@@ -37,12 +34,25 @@ void processInterrupts()
       dropoffHandler(RIGHT);
     }
   }
+
+  // dropoff only mode checks
+  if (doneSearching)
+  {
+    directionalScan(false);
+  }
   // search mode only checks
   else
   {
     directionalScan(true);
-
-    // check for adjacent dolls
+    // check if time is running out
+    if (timeElapsed() > SEARCH_TIMOUT_TIME && dollCount > 0)
+    {
+      doneSearching = true;
+    }
+  }
+  // check for adjacent dolls
+  if (dollCount < 2)
+  {
     if (analogReadAvg(SIDE_QSD_RIGHT) > QSD_SIDE_THRESHOLD)
     {
       LCD.clear();
@@ -58,6 +68,7 @@ void processInterrupts()
       dollHandler(LEFT, leftPickUp, dropOff);
     }
   }
+
   // for collisions
   if (digitalRead(FRONT_RIGHT_BUMPER_SWITCH) == PRESS_YES || digitalRead(FRONT_LEFT_BUMPER_SWITCH) == PRESS_YES)
   {

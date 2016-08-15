@@ -7,7 +7,37 @@
 void intersectionHandler()
 {
   boolean rightTurn = false, leftTurn = false, straightThrough = false;
+  /*
+  // stop the bot
+  hardStop();
+  delay(1000);//HARD_STOP_WAIT_TIME);
+  
+  // keep going through intersection using PID, checking for turn availability
+  // @TODO: how do we look at T intersections?
+  while (digitalRead(INTERSECTION_QRD_RIGHT) || digitalRead(INTERSECTION_QRD_LEFT))
+  {
+    tapeFollow(false, TAPE_FOLLOWING_REDUCED_SPEED);
+    ((digitalRead(INTERSECTION_QRD_RIGHT) == ON) || rightTurn) ? rightTurn = true : rightTurn = false;
+    ((digitalRead(INTERSECTION_QRD_LEFT) == ON) || leftTurn) ? leftTurn = true : leftTurn = false;
+    if (doneSearching)
+    {
+      directionalScan(false);
+    }
+    else
+    {
+      directionalScan(true);
+    }
+    // if we run off the tape, end our little inching forward
+    if (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF)
+    {
+      break;
+    }
+  }
 
+  // check if we can go straight
+  (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON || digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON) ? straightThrough = true : straightThrough = false;
+  
+  */
   // run past the intersection, checking for left and right turn availability
   for (int t = 0; t < HARD_STOP_WAIT_TIME; t += HARD_STOP_WAIT_TIME >> 4)
   {
@@ -67,6 +97,7 @@ void intersectionHandler()
     }
     hardStop();
   }
+  
 
   // Compute optimal direction
   // Temporarily prioritizing left-straight-right until sensors are online
@@ -168,6 +199,34 @@ direction_e determineDirection(boolean rightTurn, boolean leftTurn, boolean stra
       xPointTurn();
     }
   }
+
+  // set new previous turn according to decision made here
+  if (travelDirection == LEFT)
+  {
+    setPreviousTurn(LEFT);
+    lastTurn = LEFT;
+  }
+  else if (travelDirection == RIGHT)
+  {
+    setPreviousTurn(RIGHT);
+    lastTurn = RIGHT;
+  }
+  else // forward
+  {
+    lastTurn = FORWARD;
+    if (leftTurn && !rightTurn)
+    {
+      setPreviousTurn(LEFT);
+    }
+    else if (rightTurn && !leftTurn)
+    {
+      setPreviousTurn(RIGHT);
+    }
+    else
+    {
+      setPreviousTurn(FORWARD);
+    }
+  }
   return travelDirection;
 }
 
@@ -197,7 +256,7 @@ void dollHandler(direction_e dollSide, armPosition_t pickUp, armPosition_t dropO
     passengerAquire(leftPickUp);
   }
   //setLoadStatus(TRUE);
-  setTravelAngle(90);
+  //setTravelAngle(90);
 }
 
 /*
@@ -221,22 +280,14 @@ void dropoffHandler(direction_e dropoffSide)
   }
   else // left side dropoff
   {
-    // need to move forward, and turn around
-    // @TODO how to move forward, while keeping tape? or do the amazing hard coding?
-    // Here's some awesome hard coding for now
-    motor.speed(MOTOR_RIGHT_WHEEL, PULLOVER_SPEED);
-    motor.speed(MOTOR_LEFT_WHEEL, PULLOVER_SPEED);
-    delay(DROPOFF_TURN_AROUND_WAIT);
+    // need to move forward, and turn around 
+    tapeFollowForTime(DROPOFF_TURN_AROUND_WAIT, TAPE_FOLLOWING_DEFAULT_SPEED);
     hardStop();
 
     // Turn around, and unload
     xPointTurn();
     motor.speed(MOTOR_CONVEYOR, -CONVEYOR_SPEED);
-    long dropoffStartTime = millis();
-    while(millis() - dropoffStartTime < DROPOFF_CONVEYOR_WAIT_TIME)
-    {
-      tapeFollow(false, TAPE_FOLLOWING_REDUCED_SPEED);
-    }
+    tapeFollowForTime(DROPOFF_CONVEYOR_WAIT_TIME, TAPE_FOLLOWING_REDUCED_SPEED);
     motor.stop(MOTOR_CONVEYOR);
   }
 

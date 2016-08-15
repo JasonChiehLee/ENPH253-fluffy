@@ -68,36 +68,70 @@ void tapeFollow(bool interruptsEnabled, byte defaultSpeed)
   currentMotorSpeedRight = currentMotorSpeedRight + totalAdjustment;
   currentMotorSpeedLeft = currentMotorSpeedLeft - totalAdjustment;
 
-#if 1 // FOR DEBUG/TEST, DISABLE FOR ACTUAL RUNNING
+#if SENSOR_DEBUG // FOR DEBUG/TEST, DISABLE FOR ACTUAL RUNNING
   if (tapeFollowing_loopCount == 30)
   {
-    if (!turnBiased)
+    if (1)//!turnBiased)
     {
       LCD.clear();
       LCD.setCursor(0, 0);
-      LCD.print(analogRead(FRONT_QSD_LEFT));
+      LCD.print(analogReadAvg(FRONT_QSD_LEFT));
 
       LCD.setCursor(4, 0);
-      LCD.print(analogRead(FRONT_QSD_STRAIGHT));
+      LCD.print(analogReadAvg(FRONT_QSD_STRAIGHT));
 
       LCD.setCursor(8, 0);
-      LCD.print(analogRead(FRONT_QSD_RIGHT));
+      LCD.print(analogReadAvg(FRONT_QSD_RIGHT));
 
       LCD.setCursor(12, 0);
-      LCD.print(analogRead(TOP_QSD_LEFT));
+      LCD.print(analogReadAvg(TOP_QSD_LEFT));
 
       LCD.setCursor(0, 1);
-      LCD.print(analogRead(TOP_QSD_STRAIGHT));
+      LCD.print(analogReadAvg(TOP_QSD_STRAIGHT));
 
       LCD.setCursor(4, 1);
-      LCD.print(analogRead(TOP_QSD_RIGHT));
+      LCD.print(analogReadAvg(TOP_QSD_RIGHT));
 
       LCD.setCursor(8, 1);
-      LCD.print(analogRead(SIDE_QSD_LEFT));
+      LCD.print(turnBiased);//analogReadAvg(SIDE_QSD_LEFT));
 
       LCD.setCursor(12, 1);
-      LCD.print(analogRead(SIDE_QSD_RIGHT));
+      //LCD.print(analogReadAvg(SIDE_QSD_RIGHT));
     }
+
+    tapeFollowing_loopCount = 0;
+  }
+#else
+  if (tapeFollowing_loopCount == 30)
+  {
+    LCD.clear();
+    LCD.home();
+    if (previousTurn == LEFT)
+    {
+      LCD.print("LEFT");
+    }
+    else if (previousTurn == RIGHT)
+    {
+      LCD.print("RIGHT");
+    }
+    else if (previousTurn == FORWARD)
+    {
+      LCD.print("FORWARD");
+    }
+    else
+    {
+      LCD.print("KILL YOURSELF");
+    }
+
+    LCD.setCursor(0, 1);
+
+    if (turnBiased)
+    {
+      LCD.print(travelAngle);
+    }
+
+    LCD.setCursor(5, 1);
+    LCD.print(dollCount);
 
     tapeFollowing_loopCount = 0;
   }
@@ -134,31 +168,42 @@ void intersectionTurn(direction_e turnDirection) {
   {
     LCD.print(" turn left");
     motor.speed(MOTOR_RIGHT_WHEEL, INTERSECTION_TURN_SPEED);
-    motor.stop(MOTOR_LEFT_WHEEL);
+    motor.speed(MOTOR_LEFT_WHEEL, -INTERSECTION_TURN_SPEED >> 2);
     // wait until both QRDs are off - excellent hard coding
-    delay(INTERSECTION_TURN_TIME);
+    //delay(INTERSECTION_TURN_TIME);
+    while ((digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON) || (digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON))
+    {
+      delay(INTERSECTION_TURN_WAIT_TIME);
+    }
+    LCD.home();
+    LCD.clear();
+    LCD.print("Lost tape already");
     // wait until at least one QRD is on again
     while ((digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF) && (digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF))
     {
       delay(INTERSECTION_TURN_WAIT_TIME);
     }
     motor.stop(MOTOR_RIGHT_WHEEL);
-    setPreviousTurn(LEFT);
   }
   else if (turnDirection == RIGHT)
   {
     LCD.print(" turn right");
-    motor.stop(MOTOR_RIGHT_WHEEL);
+    motor.speed(MOTOR_RIGHT_WHEEL, -INTERSECTION_TURN_SPEED >> 2);
     motor.speed(MOTOR_LEFT_WHEEL, INTERSECTION_TURN_SPEED);
     // wait until both QRDs are off - excellent ard coding
-    delay(INTERSECTION_TURN_TIME);
+    while ((digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == ON) || (digitalRead(TAPE_FOLLOWING_QRD_LEFT) == ON))
+    {
+      delay(INTERSECTION_TURN_WAIT_TIME);
+    }
+    LCD.home();
+    LCD.clear();
+    LCD.print("Lost tape already");
     // wait until both QRDs are on again
     while (digitalRead(TAPE_FOLLOWING_QRD_RIGHT) == OFF && digitalRead(TAPE_FOLLOWING_QRD_LEFT) == OFF)
     {
       delay(INTERSECTION_TURN_WAIT_TIME);
     }
     motor.stop(MOTOR_LEFT_WHEEL);
-    setPreviousTurn(RIGHT);
   }
   else // FORWARD
   {
@@ -167,7 +212,45 @@ void intersectionTurn(direction_e turnDirection) {
     motor.speed(MOTOR_LEFT_WHEEL, currentMotorSpeedLeft);
   }
   turnBiased = false;
-  setTravelAngle(90);
+
+  // set next default turn direction
+  // only going straight for showing off
+  setTravelAngle(30);
+  /*
+  if (doneSearching)
+  {
+    if (turnDirection == LEFT)
+    {
+      setTravelAngle(LEFT_ANGLE);
+    }
+    else if (turnDirection == RIGHT)
+    {
+      setTravelAngle(RIGHT_ANGLE);
+    }
+  }
+  else
+  {
+    if (turnDirection == LEFT)
+    {
+      setTravelAngle(RIGHT_ANGLE);
+    }
+    else if (turnDirection == RIGHT)
+    {
+      setTravelAngle(LEFT_ANGLE);
+    }
+    else
+    {
+      if (random(0, 2) == 1)
+      {
+        setTravelAngle(RIGHT_ANGLE);
+      }
+      else
+      {
+        setTravelAngle(LEFT_ANGLE);
+      }
+    }
+  }
+  */
 }
 
 /*
@@ -233,6 +316,8 @@ void xPointTurn() {
   }
 
 
+  hardStop();
+  delay(1000);
 
   //Back-up, until back bumper is hit
   LCD.clear();
@@ -257,6 +342,9 @@ void xPointTurn() {
     delay(MOTOR_WRITE_WAIT_TIME);
   }
 
+  hardStop();
+  delay(1000);
+  
   LCD.clear();
   LCD.home();
   LCD.print("Forward");
@@ -297,8 +385,8 @@ void centreAlign(direction_e pickUp)
   int currentSignal = analogReadAvg(signalSensor);
   while (currentSignal >= lastSignal - 2)
   {
-    delay(MOTOR_WRITE_WAIT_TIME);
-    Serial.println(currentSignal);
+    tapeFollow(false, TAPE_FOLLOWING_REDUCED_SPEED);
+    //delay(MOTOR_WRITE_WAIT_TIME);
     lastSignal = currentSignal;
     currentSignal = analogReadAvg(signalSensor);
   }
@@ -307,5 +395,21 @@ void centreAlign(direction_e pickUp)
 
   // @TODO do we need a backing up section?
 
+}
+
+/*
+   function - tapeFollowForTime
+
+   follows tape with no interrupts for a specified time
+*/
+
+void tapeFollowForTime (long time, byte speed)
+{
+  long startTime = millis();
+
+  while (millis() - startTime < time)
+  {
+    tapeFollow(false, speed);
+  }
 }
 

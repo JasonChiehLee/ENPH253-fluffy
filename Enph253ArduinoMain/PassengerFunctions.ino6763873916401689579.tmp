@@ -115,8 +115,7 @@ void passengerAquire(armPosition_t pickUp)
   delay(SERVO_WAIT_TIME);
   if (pickUp.baseRotationAngle == rightPickUp.baseRotationAngle)
   {
-    slowServo0Rotate(pickUp.baseRotationAngle, dropOffInit.baseRotationAngle);
-    //RCServo0.write(dropOffInit.baseRotationAngle);
+    RCServo0.write(dropOffInit.baseRotationAngle);
   }
   else
   {
